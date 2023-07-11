@@ -1,3 +1,11 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.full { @apply w-full h-full }
+
+html, body, #app { @apply full }
+
+#app { @apply bg-black flex justify-center items-center p-8 gap-8 }
+
+#app > div { @apply full }
