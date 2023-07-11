@@ -1,10 +1,9 @@
 <template>
-  <RouterView />
+    <div class="bg-white">blanco</div>
+    <div class="bg-orange">naranja</div>
 </template>
 
 <script setup>
-
-import { RouterView } from 'vue-router'
 
 </script>
 
