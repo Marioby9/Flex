@@ -11,47 +11,27 @@ const router = createRouter({
     {   
       path: '/', 
       name: 'home',
-      component: () => Home,
-      meta: { 
-          enter: 'animate__animated animate__slideInLeft',
-          leave: 'animate__animated animate__slideOutRight'
-      }
+      component: () => Home
     },
     {   
       path: '/plans', 
       name: 'plans',
-      component: () => import('@/views/Plans.vue'),
-      meta: { 
-        enter: 'animate__animated animate__slideInRight',
-        leave: 'animate__animated animate__slideOutLeft'
-      }
+      component: () => import('@/views/Plans.vue')
     },
     {   
       path: '/explore', 
       name: 'explore',
-      component: () => import('@/views/Explore.vue'),
-      meta: { 
-        enter: 'animate__animated animate__slideInRight',
-        leave: 'animate__animated animate__slideOutLeft'
-      }
+      component: () => import('@/views/Explore.vue')
     },
     {   
       path: '/stats', 
       name: 'stats',
-      component: () => import('@/views/Stats.vue'),
-      meta: { 
-        enter: 'animate__animated animate__slideInRight',
-        leave: 'animate__animated animate__slideOutLeft'
-      }
+      component: () => import('@/views/Stats.vue')
     },
     {   
       path: '/me', 
       name: 'me',
-      component: () => import('@/views/Me.vue'),
-      meta: { 
-        enter: 'animate__animated animate__slideInRight',
-        leave: 'animate__animated animate__slideOutLeft'
-      }
+      component: () => import('@/views/Me.vue')
     }
   ]
 })
