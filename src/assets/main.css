@@ -6,6 +6,5 @@
 
 html, body, #app { @apply full }
 
-#app { @apply bg-black flex justify-center items-center p-8 gap-8 }
+#app { @apply bg-black }
 
-#app > div { @apply full }
