@@ -1,9 +1,7 @@
 <template>
-    <div class="flex items-center justify-center h-3/5">
-       <div class="bg-orange w-3/5 h-full flex justify-center items-center text-4xl">
-           <h1>Renderizando Stats</h1>
-       </div>
-   </div>
+    <div class="page">
+        stats
+    </div>
 </template>
 
 <script setup>

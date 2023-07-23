@@ -1,10 +1,15 @@
 <template>
-  <Header/>
-    <RouterView v-slot="{ Component, route }">
-          <Transition name="fade" mode="out-in">
-            <component :is="Component" />
-          </Transition>
-    </RouterView>
+    <div class="center bg-coal text-6xl p-5 font-mono">
+      <h1>FLEX</h1>
+    </div>
+    <div class="view">
+      <RouterView  v-slot="{ Component, route }">
+            <Transition name="fade" mode="out-in">
+              <component :is="Component" />
+            </Transition>
+      </RouterView>
+    </div>
+    <Header/>
 </template>
 
 <script setup>
