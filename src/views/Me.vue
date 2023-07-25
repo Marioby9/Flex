@@ -1,0 +1,13 @@
+<template>
+    <div class="page">
+        me
+    </div>
+</template>
+
+<script setup>
+
+</script>
+
+<style lang="scss" scoped>
+
+</style>

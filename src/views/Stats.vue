@@ -1,6 +1,7 @@
 <template>
-    <div class="bg-white">blanco</div>
-    <div class="bg-orange">naranja</div>
+    <div class="page">
+        stats
+    </div>
 </template>
 
 <script setup>
