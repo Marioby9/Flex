@@ -11,7 +11,7 @@
             <img class="h-9 w-9" src="@/assets/img/add.png" alt="add">
         </div>
 
-        <div class="exercise" v-for="exe in currentRout.exercises">
+        <div class="exercise" v-for="exe in exercises">
             <h3 class="text-xl font-bold">{{ exe.name }}</h3>
             <p>Series: {{ exe.series}} </p>
             <p>Reps: {{ exe.reps  }}</p>
@@ -21,11 +21,12 @@
 </template>
 
 <script setup>
-    import {getRoutines, getExercises} from "@/firebase.js";
+    import {getRoutines, getExercise} from "@/firebase.js";
     import {onMounted, ref} from "vue";
 
     const routines = ref([]);
     const currentRout = ref({});
+    const exercises = ref([]);
 
     const changeRoutine = (routine) => {
         currentRout.value = routine;
@@ -38,13 +39,22 @@
         })
 
         currentRout.value = routines.value[0]; //Habia que ponerlo dentro del callback de getRoutines
+        console.log(routines.value[0].exercises)
         });
+
+        currentRout.value.exercises.forEach(id => {
+            getExercise(id, doc => {
+                exercises.value.push( {id:doc.id, ...doc.data()} );
+            })
+        })
+
 
     })
 
+    
 
-   
 
+     
     
 </script>
 

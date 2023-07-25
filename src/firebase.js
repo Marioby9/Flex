@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {onSnapshot, collection, getFirestore} from "firebase/firestore";
+import {onSnapshot, collection, getFirestore, doc, getDoc} from "firebase/firestore";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -24,4 +24,4 @@ const analytics = getAnalytics(app);
 
 //OnSnapshot es un getter y traemos rutinas
 export const getRoutines = (callback) => onSnapshot(collection(db, '/routines'), callback);
-export const getExercises = (callback) => onSnapshot(collection(db, '/exercises'), callback);
+export const getExercise = (id, callback) => onSnapshot(doc(db, '/exercises', id), callback);
