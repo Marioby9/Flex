@@ -8,8 +8,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "firebase": "^10.0.0",
+    "firebase": "^10.1.0",
     "pinia": "^2.1.3",
+    "proxy-observe": "^0.0.21",
     "vue": "^3.3.4",
     "vue-router": "^4.2.4"
   },

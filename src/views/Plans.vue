@@ -1,10 +1,8 @@
 <template>
-     <div class="page">
+     <div class="page" v-if="loading">
         
         <div class="options flex gap-3">
-            <h3 class="text-2xl underline decoration-orange" 
-                       v-for="rou in routines"
-                       @click="changeRoutine(rou)"> 
+            <h3 v-for="rou in routines" class="text-2xl underline decoration-orange" @click="changeRoutine(rou)"> 
                 {{ rou.name }}
             </h3>
 
@@ -13,48 +11,51 @@
 
         <div class="exercise" v-for="exe in exercises">
             <h3 class="text-xl font-bold">{{ exe.name }}</h3>
-            <p>Series: {{ exe.series}} </p>
-            <p>Reps: {{ exe.reps  }}</p>
+            <p>Series: {{ exe.series }} </p>
+            <p>Reps: {{ exe.reps }}</p>
         </div>
 
     </div>
 </template>
 
 <script setup>
-    import {getRoutines, getExercise} from "@/firebase.js";
-    import {onMounted, ref} from "vue";
+
+    import { getRoutines, getExercise } from "@/firebase.js";
+    import { onMounted, ref, reactive, watch } from "vue";
+
+    //
 
     const routines = ref([]);
     const currentRout = ref({});
     const exercises = ref([]);
+    const loading = ref(true)
 
-    const changeRoutine = (routine) => {
-        currentRout.value = routine;
-    };
+    //
 
-    onMounted(() => {
+    const loadRoutines = () => {
         getRoutines(docs => {
             docs.forEach(element => {
-            routines.value.push( {id:element.id , ...element.data()}); 
+                console.log(element.data())
+                routines.value.push({...{ id: element.id , ...element.data() }})
+                
+            })
+            currentRout.value = routines.value[0]
         })
+    }
 
-        currentRout.value = routines.value[0]; //Habia que ponerlo dentro del callback de getRoutines
-        console.log(routines.value[0].exercises)
-        });
-
-        currentRout.value.exercises.forEach(id => {
+    const loadExercises = () => {
+        currentRout.value[['exercises']].forEach(id => {
             getExercise(id, doc => {
-                exercises.value.push( {id:doc.id, ...doc.data()} );
+                exercises.value.push({ id: doc.id, ...doc.data() })
             })
         })
+    }
 
+    watch(currentRout, (newRout) => loadExercises())
 
-    })
+    //
 
-    
-
-
-     
+    onMounted(() => loadRoutines())
     
 </script>
 

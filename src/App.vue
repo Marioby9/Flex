@@ -3,11 +3,7 @@
       <h1>FLEX</h1>
     </div>
     <div class="view">
-      <RouterView  v-slot="{ Component, route }">
-            <Transition name="fade" mode="out-in">
-              <component :is="Component" />
-            </Transition>
-      </RouterView>
+      <RouterView />
     </div>
     <Header/>
 </template>
