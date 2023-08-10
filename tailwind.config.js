@@ -10,7 +10,9 @@ module.exports = {
       'black': '#222',
       'coal':  '#2b2b2b',
       'white': '#f2f2f2',
-      'orange': '#ff8800'
+      'orange': '#ff8800',
+      'lightOrange': '#ffa640'
+
     }
   },
   plugins: [],

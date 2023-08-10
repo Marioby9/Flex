@@ -11,7 +11,7 @@
     import { RouterLink } from 'vue-router';
 
     const menu = [
-        {path: '/plans', name: 'Plan', img: 'src/assets/img/plan.png'},
+        {path: '/', name: 'Home', img: 'src/assets/img/plan.png'},
         {path: '/stats', name: 'Stats', img: 'src/assets/img/stats.png'},
         {path: '/me', name: 'Me', img: 'src/assets/img/me.png'}
     ]
@@ -24,4 +24,5 @@
     abbr{@apply w-full h-full block}
     
     
+
 </style>

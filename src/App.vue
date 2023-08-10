@@ -1,5 +1,5 @@
 <template>
-    <div class="center bg-coal text-6xl p-5 font-mono">
+    <div class="center title">
       <h1>FLEX</h1>
     </div>
     <div class="view">
@@ -21,6 +21,12 @@ import Header from '@/components/Header.vue'
 </script>
 
 <style  scoped>
+
+@import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400;700;800;900&display=swap');
+
+.title{@apply bg-coal text-7xl p-5;
+        font-family: 'Tektur', extrabold;}
+
 .slide-fade-enter-active {
   transition: all 0.6s ease-out;
 }

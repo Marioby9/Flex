@@ -5,9 +5,9 @@
 </template>
 
 <script setup>
-
+    import AddExe from '../components/AddExe.vue';
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+    
 </style>
