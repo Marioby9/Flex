@@ -9,13 +9,16 @@
             </Transition>
       </RouterView>
     </div>
-    <Header/>
+    <div class="footer">
+      <Menu/>
+    </div>
+    
 </template>
 
 <script setup>
 
 import { RouterView} from 'vue-router'
-import Header from '@/components/Header.vue'
+import Menu from '@/components/Menu.vue'
 
 
 </script>
@@ -24,9 +27,10 @@ import Header from '@/components/Header.vue'
 
 @import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400;700;800;900&display=swap');
 
-.title{@apply bg-coal text-7xl p-5;
+.title{@apply bg-coal text-7xl p-5 text-orange sticky top-0;
         font-family: 'Tektur', extrabold;}
 
+.view{@apply flex-1 overflow-y-auto}
 .slide-fade-enter-active {
   transition: all 0.6s ease-out;
 }
@@ -40,4 +44,6 @@ import Header from '@/components/Header.vue'
 .fade-leave-to {
   opacity: 0;
 }
+
+.footer{@apply sticky bottom-0 left-0 bg-black}
 </style>

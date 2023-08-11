@@ -9,14 +9,14 @@
             <div class="form">
                 <h1>Add a new plan</h1>
                 <h3>Name:</h3>
-                <input type="text" placeholder="Ex: Push B Routine">
+                <input type="text" placeholder="Ex: Push B Routine" v-model="newName">
                 <h3>Description:</h3>
                 <input type="text" placeholder="Observations">
             </div>
 
             <div class="options center">
                 <h3 @click="cancel">CANCEL</h3>
-                <h3>ACCEPT</h3>
+                <h3 @click="accept">ACCEPT</h3>
             </div>
 
         </div>
@@ -27,7 +27,9 @@
 
 <script setup>
 
-    import { defineProps } from 'vue';
+    import { defineProps, ref } from 'vue';
+
+    let newName = ref('');
 
     //Props from the parent
     const props = defineProps({
@@ -38,6 +40,12 @@
     //Executes when cancel is clicked
     const cancel = () => {
         props.onCancel();
+        newName.value = '';
+    }
+
+    //Executes when accept is clicked and pass the newName to the parent
+    const accept = () => {
+        props.onAccept(newName.value);
     }
 
 </script>

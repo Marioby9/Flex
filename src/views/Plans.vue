@@ -3,17 +3,17 @@
      <div class="page" >
         
             <div class="options flex gap-3">
-                <h3 class="text-2xl" 
-                        v-for="rou in routines"
-                        @click="changeRoutine(rou)"> 
-                        {{ rou.name }}
+                <h3 
+                    v-for="rou in routines"
+                    @click="changeRoutine(rou)"> 
+                    {{ rou.name }}
                 </h3>
 
-                <img class="h-9 w-9" src="@/assets/img/add.png" alt="add" @click="addExercise">
+                <img class="h-9 w-9 " src="@/assets/img/add.png" alt="add" @click="addPlan">
             </div>
 
            
-            <div class="exercises space-y-4" :style="{ opacity: opacity }">
+            <div class="exercises space-y-4" :class="{ 'opacity-10': isOpac, 'pointer-events-none': isDisabled }">
                 <ExeCard class="exeCard"
                     v-for="exe in exercises"
                     :name = exe.name
@@ -23,8 +23,8 @@
 
             </div>
 
-            <div class="addExe absolute top-1/4 self-center" :class="{ 'hidden': isHidden }">
-                <AddExe :onCancel = "cancel" />
+            <div class="addExe absolute top-1/4 self-center" :class="{ 'hidden': showModal }">
+                <AddRoutine :onCancel = "cancel" :onAccept = "accept" />
             </div>
             
             
@@ -35,17 +35,19 @@
 
 <script setup>
     import ExeCard from "../components/ExeCard.vue";
-    import AddExe from "../components/AddExe.vue";
+    import AddRoutine from "../components/AddRoutine.vue";
 
-    import {getRoutines, getExercise} from "@/firebase.js";
+    import {getRoutines, getExercise, addRoutine} from "@/firebase.js";
     import {onMounted, ref, watch} from "vue";
 
     const routines = ref([]);
     const currentRout = ref({});
     const exercises = ref([]);
-    const opacity = ref(1);
-    const isHidden = ref(true);
 
+    //Modal Logic 
+    const isOpac = ref(false);
+    const isDisabled = ref(false);
+    const showModal = ref(true);
 
     const changeRoutine = (routine) => {
         exercises.value = [];
@@ -78,19 +80,41 @@
      
 
     //Functions when adding an exercise
-    const addExercise = () => {
-        opacity.value = 0.1;
-        isHidden.value = false;
+    const addPlan = () => {
+        isOpac.value = true;
+        isDisabled.value = true;
+        showModal.value = false;
     }
 
     const cancel = () => {
-        opacity.value = 1;
-        isHidden.value = true;
+        isOpac.value = false;
+        isDisabled.value = false;
+        showModal.value = true;
+    }
+
+    const accept = (newName) => {
+       if(newName == ''){
+            console.log('No ha rellenado el campo')
+       }
+       else{
+            try{
+                addRoutine({
+                    name: newName,
+                    exercises : []
+                });
+                cancel();
+            }
+            catch(error){
+                console.log('Error al añadir: ', error);
+            }
+       }
     }
 
     
 </script>
 
 <style scoped>
-   
+   .options {
+     font-size: 22px;
+   }
 </style>

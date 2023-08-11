@@ -1,7 +1,7 @@
 <template>
         <nav class="menu">
-            <RouterLink v-for="elm in menu" :to="elm.path">
-                <abbr :title="elm.name"><img :src="elm.img" alt="elm.name"></abbr>
+            <RouterLink  v-for="elm in menu" :to="elm.path">
+                <abbr class="center" :title="elm.name"><img :src="elm.img" alt="elm.name"></abbr>
             </RouterLink>
         </nav>
     
@@ -19,9 +19,11 @@
 </script>
 
 <style scoped>
-    .menu {@apply h-16 w-full flex items-center justify-around}
-    .menu a{@apply w-12 h-12 p-1}
-    abbr{@apply w-full h-full block}
+    .menu {@apply h-24 w-full flex items-center justify-around}
+    .menu a{@apply w-24 h-full p-1 }
+    abbr{@apply w-full h-full flex-col}
+    
+    
     
     
 
