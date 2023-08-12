@@ -1,11 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+
+
 .full { @apply w-full h-full }
+.full{font-family: 'Inter', sans-serif;}
 
 html, body, #app { @apply full }
 
-#app { @apply bg-black flex justify-center items-center p-8 gap-8 }
+#app { @apply bg-black text-white flex flex-col}
 
-#app > div { @apply full }
+.center{@apply flex justify-center items-center}
+
+.view{ @apply w-full h-full bg-coal}
+.page{ @apply w-full h-full flex flex-col p-8 gap-4 }
