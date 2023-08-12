@@ -35,7 +35,7 @@
 
     <div>
       <h1 class="text-3xl font-semibold">My routines</h1>
-      <div class="flex gap-3 w-full overflow-auto pt-3">
+      <div class="flex gap-3 w-full overflow-auto pt-3 ">
         <ExeCard class="exeCard" v-for="rou in routines" :name="rou.name" />
         <img
         class="h-30 w-20 "

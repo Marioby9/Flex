@@ -44,6 +44,6 @@ const props = defineProps({
   @apply flex-col space-y-3 w-full h-32  bg-gradient-to-b from-lightOrange to-orange rounded-xl text-black text-lg p-3;
 }
 .exeCard:hover {
-  @apply scale-110;
+  @apply scale-110 duration-700;
 }
 </style>
