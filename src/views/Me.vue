@@ -1,18 +1,54 @@
 <template>
-    <div class="page">
-        <header>
-            <h1>Hi, user</h1>
-            <h3>You will achive your goals</h3>
-        </header>
-    </div>
+  <div class="page">
+    <header>
+      <h1>Hi, user</h1>
+      <h3>You will achive your goals</h3>
+    </header>
+
+    <TableData :data="currentData" :title="'Current Data'" />
+    <TableData :data="objective" :title="'Objectives'" />
+  </div>
 </template>
 
 <script setup>
+import TableData from "../components/TableData.vue";
 
+const currentData = [
+  {
+    key: "Height",
+    value: "178",
+  },
+  {
+    key: "Weight",
+    value: "88",
+  },
+  {
+    key: "IMC",
+    value: "jose",
+  },
+];
+
+const objective = [
+  {
+    key: "Height",
+    value: "178",
+  },
+  {
+    key: "Weight",
+    value: "95",
+  },
+  {
+    key: "IMC",
+    value: "25",
+  },
+];
 </script>
 
 <style scoped>
-    
-    header > h1{@apply text-4xl font-extrabold}
-    header > h3{@apply text-lg}
+header > h1 {
+  @apply text-4xl font-extrabold;
+}
+header > h3 {
+  @apply text-lg;
+}
 </style>
