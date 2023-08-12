@@ -1,20 +1,26 @@
 <template>
   <nav class="menu">
     <RouterLink v-for="elm in menu" :to="elm.path">
-      <abbr class="center" :title="elm.name"
-        ><img :src="elm.img" alt="elm.name"
-      /></abbr>
+      <abbr class="center" :title="elm.name">
+        <img :src="route.path == elm.path ? elm.img + '.png' : elm.img + 'W.png'" alt="elm.name"/>
+      </abbr>
     </RouterLink>
   </nav>
 </template>
 
 <script setup>
-import { RouterLink } from "vue-router";
+
+import { RouterLink, useRoute } from "vue-router";
+
+//
+
+const route = useRoute()
+console.log(route.path)
 
 const menu = [
-  { path: "/", name: "Home", img: "src/assets/img/plan.png" },
-  { path: "/stats", name: "Stats", img: "src/assets/img/stats.png" },
-  { path: "/me", name: "Me", img: "src/assets/img/me.png" },
+  { path: "/", name: "home", img: "src/assets/img/plan" },
+  { path: "/stats", name: "stats", img: "src/assets/img/stats" },
+  { path: "/user", name: "user", img: "src/assets/img/me" },
 ];
 </script>
 
