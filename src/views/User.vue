@@ -45,6 +45,9 @@ const objective = [
 </script>
 
 <style scoped>
+
+.page{@apply p-5}
+
 header > h1 {
   @apply text-4xl font-extrabold;
 }

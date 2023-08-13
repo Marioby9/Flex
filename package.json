@@ -10,6 +10,9 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
+    "@fortawesome/vue-fontawesome": "^3.0.3",
     "@vueuse/core": "^10.3.0",
     "firebase": "^10.1.0",
     "pinia": "^2.1.3",
