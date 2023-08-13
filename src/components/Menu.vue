@@ -5,6 +5,7 @@
         <img :src="route.path == elm.path ? elm.img + '.png' : elm.img + 'W.png'" alt="elm.name"/>
       </abbr>
     </RouterLink>
+    
   </nav>
 </template>
 
@@ -18,9 +19,9 @@ const route = useRoute()
 console.log(route.path)
 
 const menu = [
-  { path: "/", name: "home", img: "src/assets/img/plan" },
-  { path: "/stats", name: "stats", img: "src/assets/img/stats" },
-  { path: "/user", name: "user", img: "src/assets/img/me" },
+  { path: "/", name: "home", img: "/Flex/src/assets/img/plan" },
+  { path: "/stats", name: "stats", img: "/Flex/src/assets/img/stats" },
+  { path: "/user", name: "user", img: "/Flex/src/assets/img/me" }
 ];
 </script>
 
