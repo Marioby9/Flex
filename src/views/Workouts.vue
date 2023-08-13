@@ -1,23 +1,20 @@
 <template>
   <div class="page">
-
     <div class="selector-container">
       <select class="selector" v-model="currentRout">
-        <option v-for="routine in routines" :value="routine">{{ routine.name }}</option>
+        <option v-for="routine in routines" :value="routine">
+          {{ routine.name }}
+        </option>
       </select>
       <img
         class="h-9 w-9"
         src="@/assets/img/add.png"
         alt="add"
-        @click="addPlan"
+        @click="isModalOpen = true"
       />
     </div>
 
-
-    <div
-      class="exercises-container"
-      :class="{ 'opacity-10': isOpac, 'pointer-events-none': isDisabled }"
-    >
+    <div class="exercises-container">
       <ExeCard
         class="exeCard"
         v-for="exe in exercises"
@@ -27,35 +24,30 @@
       />
     </div>
 
-    <div
-      class="addExe absolute top-1/4 self-center"
-      :class="{ hidden: showModal }"
-    >
-      <AddRoutine :onCancel="closeAdd" :onAccept="accept" />
+    <div class="modal-bg center" v-if="isModalOpen">
+      <ModalRoutine ref="modal" :onCancel="closeModal" :onAccept="accept" />
     </div>
   </div>
 </template>
 
 <script setup>
-
 import ExeCard from "../components/ExeCard.vue";
-import AddRoutine from "../components/AddRoutine.vue";
+import ModalRoutine from "../components/ModalRoutine.vue";
 
 import { getRoutines, getExercise, addRoutine } from "@/firebase.js";
 import { onMounted, ref, watch } from "vue";
+import { onClickOutside } from "@vueuse/core";
 
 const routines = ref([]);
 const currentRout = ref({});
 const exercises = ref([]);
 
-const aux = ref([1, 2, 3, 4, 5, 6, 7])
-const test = ref('1')
+//MODAL LOGIC
+const isModalOpen = ref(false);
+const modal = ref(null);
+onClickOutside(modal, () => (isModalOpen.value = false));
 
-//Modal Logic
-const isOpac = ref(false);
-const isDisabled = ref(false);
-const showModal = ref(true);
-
+//FUNCTIONS
 const loadRoutines = () => {
   getRoutines((docs) => {
     docs.forEach((element) => {
@@ -66,7 +58,7 @@ const loadRoutines = () => {
 };
 
 const loadExercises = () => {
-  exercises.value = []
+  exercises.value = [];
   currentRout.value[["exercises"]].forEach((id) => {
     getExercise(id, (doc) => {
       exercises.value.push({ id: doc.id, ...doc.data() });
@@ -75,20 +67,12 @@ const loadExercises = () => {
 };
 
 watch(currentRout, (newRout) => loadExercises());
-
 onMounted(() => loadRoutines());
 
-//Functions when adding an exercise
-const addPlan = () => {
-  isOpac.value = true;
-  isDisabled.value = true;
-  showModal.value = false;
-};
+//MODAL FUNCTIONS
 
-const closeAdd = () => {
-  isOpac.value = false;
-  isDisabled.value = false;
-  showModal.value = true;
+const closeModal = () => {
+  isModalOpen.value = false;
 };
 
 const accept = (newName) => {
@@ -101,7 +85,7 @@ const accept = (newName) => {
         exercises: [],
       });
       routines.value = [];
-      closeAdd();
+      isModalOpen.value = false;
     } catch (error) {
       console.log("Error al añadir: ", error);
     }
@@ -110,10 +94,20 @@ const accept = (newName) => {
 </script>
 
 <style scoped>
+.selector-container {
+  @apply w-full shrink-0 flex gap-4 p-4 bg-black;
+}
+.selector {
+  @apply w-full bg-black text-white text-xl;
+}
+option {
+  @apply text-white;
+}
+.exercises-container {
+  @apply flex flex-col overflow-y-auto gap-4 p-4;
+}
 
-.selector-container { @apply w-full shrink-0 flex gap-4 p-4 bg-black }
-.selector { @apply w-full bg-black text-white }
-option { @apply text-white }
-.exercises-container { @apply flex flex-col overflow-y-auto gap-4 p-4 }
-
+.modal-bg {
+  @apply bg-overlayBlack fixed top-0 w-full h-full;
+}
 </style>
