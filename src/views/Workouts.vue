@@ -14,7 +14,7 @@
       />
     </div>
 
-    <div class="exercises-container">
+    <div class="exercises-container center">
       <ExeCard
         class="exeCard"
         v-for="exe in exercises"
@@ -22,6 +22,9 @@
         :series="exe.series"
         :reps="exe.reps"
       />
+
+      <AddExeCard/>
+
     </div>
 
     <div class="modal-bg center" v-if="isModalOpen">
@@ -32,6 +35,7 @@
 
 <script setup>
 import ExeCard from "../components/ExeCard.vue";
+import AddExeCard from "../components/AddExeCard.vue";
 import ModalRoutine from "../components/ModalRoutine.vue";
 
 import { getRoutines, getExercise, addRoutine } from "@/firebase.js";

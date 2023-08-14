@@ -24,7 +24,7 @@ const currentData = [
   },
   {
     key: "IMC",
-    value: "jose",
+    value: "28.1",
   },
 ];
 
@@ -39,7 +39,7 @@ const objective = [
   },
   {
     key: "IMC",
-    value: "25",
+    value: "30",
   },
 ];
 </script>
