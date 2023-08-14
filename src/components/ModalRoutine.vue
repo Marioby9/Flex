@@ -19,8 +19,13 @@
       <section class="frequency">
         <h1>Frequency:</h1>
         <div class="days">
-          <button class="day" v-for="day in days">
-            {{ day }}
+          <button
+            class="day"
+            v-for="day in days"
+            :class="day.isSelected ? 'bg-orange' : 'bg-salmon'"
+            @click="day.isSelected = !day.isSelected"
+          >
+            {{ day.name }}
           </button>
         </div>
       </section>
@@ -37,7 +42,16 @@
 import { ref } from "vue";
 
 let newName = ref("");
-const days = ["M", "T", "W", "TH", "F", "ST", "SN"];
+
+const days = ref([
+  { name: "M", isSelected: false },
+  { name: "TU", isSelected: false },
+  { name: "W", isSelected: false },
+  { name: "TH", isSelected: false },
+  { name: "F", isSelected: false },
+  { name: "SA", isSelected: false },
+  { name: "SU", isSelected: false },
+]);
 
 const props = defineProps({
   onCancel: "closeModal",
@@ -79,7 +93,7 @@ const accept = () => {
   @apply flex justify-between items-center;
 }
 .day {
-  @apply bg-lightOrange font-extrabold text-lg p-1 rounded-full w-9;
+  @apply font-extrabold text-lg p-1 rounded-full w-9;
 }
 .modal .buttons {
   @apply w-full p-3 gap-5 font-bold;
