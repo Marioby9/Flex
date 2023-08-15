@@ -7,8 +7,9 @@
     <div class="card">
       <h1 class="title">Create a new workout</h1>
       <section>
-        <h3>Name:</h3>
+        <label for="name">Name:</label>
         <input
+          id="name"
           class="name"
           type="text"
           placeholder="Ex: Push B"
@@ -66,7 +67,10 @@ const cancel = () => {
 
 //Executes when accept is clicked and pass the newName to the parent
 const accept = () => {
-  props.onAccept(newName.value);
+  const frequency = days.value
+  .filter(day => day.isSelected)
+  .map(day => day.name);
+  props.onAccept(newName.value, frequency);
 };
 </script>
 

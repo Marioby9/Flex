@@ -1,11 +1,17 @@
 <template>
-  <div class="page">stats</div>
+  <div class="page">
+    <Header :title="'MY STATS'"/>
+
+  </div>
 </template>
 
-<script setup></script>
+<script setup>
+
+import Header from '../components/Header.vue';
+
+</script>
 
 <style scoped>
 
-.page{@apply p-5}
 
 </style>

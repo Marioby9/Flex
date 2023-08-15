@@ -22,7 +22,7 @@ const props = defineProps({
 
 <style scoped>
 .component {
-  @apply pt-5;
+  @apply flex flex-col gap-2;
 }
 .card {
   @apply w-full bg-lightOrange text-xl text-black rounded-xl;

@@ -1,5 +1,8 @@
 <template>
   <div class="page">
+
+    <Header :title="'MY WORKOUTS'"/>
+
     <div class="selector-container">
       <select class="selector" v-model="currentRout">
         <option v-for="routine in routines" :value="routine">
@@ -14,7 +17,7 @@
       />
     </div>
 
-    <div class="exercises-container center">
+    <div class="exercises-container">
       <ExeCard
         class="exeCard"
         v-for="exe in exercises"
@@ -26,14 +29,16 @@
       <AddExeCard/>
 
     </div>
-
-    <div class="modal-bg center" v-if="isModalOpen">
-      <ModalRoutine ref="modal" :onCancel="closeModal" :onAccept="accept" />
-    </div>
   </div>
+
+  <div class="modal-bg center" v-if="isModalOpen">
+      <ModalRoutine ref="modal" :onCancel="closeModal" :onAccept="accept" />
+  </div>
+
 </template>
 
 <script setup>
+import Header from "../components/Header.vue";
 import ExeCard from "../components/ExeCard.vue";
 import AddExeCard from "../components/AddExeCard.vue";
 import ModalRoutine from "../components/ModalRoutine.vue";
@@ -79,7 +84,7 @@ const closeModal = () => {
   isModalOpen.value = false;
 };
 
-const accept = (newName) => {
+const accept = (newName, frequency) => {
   if (newName == "") {
     console.log("No ha rellenado el campo");
   } else {
@@ -87,6 +92,7 @@ const accept = (newName) => {
       addRoutine({
         name: newName,
         exercises: [],
+        frequency: frequency
       });
       routines.value = [];
       isModalOpen.value = false;
@@ -108,7 +114,7 @@ option {
   @apply text-white;
 }
 .exercises-container {
-  @apply flex flex-col overflow-y-auto gap-4 p-4;
+  @apply flex flex-col items-center h-full overflow-y-auto gap-4 p-4;
 }
 
 .modal-bg {
