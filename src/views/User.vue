@@ -1,16 +1,21 @@
 <template>
   <div class="page">
+    <Header :title="'MY PROFILE'"/>
     <header>
       <h1>Hi, user</h1>
       <h3>You will achive your goals</h3>
     </header>
 
-    <TableData :data="currentData" :title="'Current Data'" />
-    <TableData :data="objective" :title="'Objectives'" />
+    <div class="data">
+      <TableData :data="currentData" :title="'Current Data'" />
+      <TableData :data="objective" :title="'Objectives'" />
+    </div>
+    
   </div>
 </template>
 
 <script setup>
+import Header from '../components/Header.vue';
 import TableData from "../components/TableData.vue";
 
 const currentData = [
@@ -46,12 +51,12 @@ const objective = [
 
 <style scoped>
 
-.page{@apply p-5}
-
+header{@apply p-4}
 header > h1 {
   @apply text-4xl font-extrabold;
 }
 header > h3 {
   @apply text-lg;
 }
+.data{@apply flex flex-col gap-4 p-4}
 </style>
