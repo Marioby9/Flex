@@ -4,14 +4,42 @@
         <component :is="Component" />
     </RouterView>
   </div>
-  <div class="footer">
+  <div class="footer" v-if="isLoggedIn">
     <Menu />
   </div>
 </template>
 
 <script setup>
+
 import { RouterView } from "vue-router";
+import { onMounted, ref } from "vue";
 import Menu from "@/components/Menu.vue";
+import { auth } from '@/firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+import { useRouter } from 'vue-router'
+
+//
+
+const router = useRouter()
+
+//
+
+const isLoggedIn = ref(false)
+
+onMounted(() => {
+  console.log(auth.currentUser)
+  onAuthStateChanged(auth, (user) => {
+    if(user) {
+      console.log(user)
+      isLoggedIn.value = true
+      router.push({ path: '/workouts' })
+    } else {
+      isLoggedIn.value = false
+      router.push({ path: '/' })
+    }
+  })
+})
+
 </script>
 
 <style scoped>

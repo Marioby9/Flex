@@ -105,7 +105,7 @@ const accept = (newName, frequency) => {
 
 <style scoped>
 .selector-container {
-  @apply w-full shrink-0 flex gap-4 p-4 bg-black;
+  @apply w-full flex gap-4 p-4 bg-black;
 }
 .selector {
   @apply w-full bg-black text-white text-xl;
@@ -120,4 +120,5 @@ option {
 .modal-bg {
   @apply bg-overlayBlack fixed top-0 w-full h-full;
 }
+
 </style>
