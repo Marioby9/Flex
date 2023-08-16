@@ -2,9 +2,10 @@
   <nav class="menu">
     <RouterLink v-for="elm in menu" :to="elm.path">
       <abbr class="center" :title="elm.name">
-        <img :src="route.path == elm.path ? elm.img + '.png' : elm.img + 'W.png'" alt="elm.name"/>
+        <font-awesome-icon :icon="elm.icon" :class="route.path == elm.path ? 'text-orange' : 'text-white'" alt="elm.name" />
       </abbr>
     </RouterLink>
+    
   </nav>
 </template>
 
@@ -18,15 +19,16 @@ const route = useRoute()
 console.log(route.path)
 
 const menu = [
-  { path: "/", name: "home", img: "src/assets/img/plan" },
-  { path: "/stats", name: "stats", img: "src/assets/img/stats" },
-  { path: "/user", name: "user", img: "src/assets/img/me" },
+  { path: "/", name: "home", icon: "dumbbell" },
+  { path: "/stats", name: "stats", icon: "chart-simple" },
+  { path: "/user", name: "user", icon: "user" }
 ];
+
 </script>
 
 <style scoped>
 .menu {
-  @apply h-24 w-full flex items-center justify-around;
+  @apply h-24 w-full flex items-center justify-around text-3xl;
 }
 .menu a {
   @apply w-1/3 h-full p-1;

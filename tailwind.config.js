@@ -12,7 +12,10 @@ module.exports = {
       'coal':  '#2b2b2b',
       'white': '#f2f2f2',
       'orange': '#ff8800',
-      'lightOrange': '#ffa640'
+      'lightOrange': '#ffa640',
+      'salmon': '#f4ca9b',
+      'overlayBlack': 'rgba(0, 0, 0, 0.8)'
+
 
     }
   },
