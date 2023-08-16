@@ -1,17 +1,32 @@
 <template>
-    <div class="form full">
+    <div class="page">
+
+        <header class="center">
+            <h1>¡Welcome!</h1>
+            <h3>SignUp to create an account</h3>
+        </header>
+        <div class="field">
+            <input placeholder="username" type="username">
+        </div>
         <div class="field">
             <input placeholder="email" type="email" v-model="email">
         </div>
         <div class="field">
             <input placeholder="password" type="password" v-model="password">
         </div>
-        <button @click="login()">login</button>
+        <div class="field">
+            <input placeholder="confirm password" type="confPassword">
+        </div>
+        <button class="login" @click="signup()">SignUp</button>
         <hr>
+        <h3 v-if="isError">Vaya, ha ocurrido un error...</h3>
         <button class="google">
             <p>continue with Google</p>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/706px-Google_%22G%22_Logo.svg.png" className='w-8'/>
         </button>
+        <RouterLink to="/">
+            <p>back</p>
+        </RouterLink>
     </div>
 </template>
 
@@ -20,39 +35,42 @@
 
 import { ref } from 'vue'
 import { auth } from '@/firebase.js'
-import { useUserStore } from '@/stores/user.js'
-import { signInWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'vue-router'
+import { createUserWithEmailAndPassword } from 'firebase/auth'
+import { RouterLink , useRouter } from 'vue-router'
 
 //
 
 const router = useRouter()
 
-const user = useUserStore()
-
 //
 
 const email = ref('')
 const password = ref('')
+const isError = ref(false)
 
-const login = (event) => {
-    event.preventDefault()
-    signInWithEmailAndPassword(auth, email.value, password.value)
+const signup = () => {
+    createUserWithEmailAndPassword(auth, email.value, password.value)
     .then(credentials => {
         router.push({ path: '/workouts' })
     })
-    .catch(error => console.log(error))
+    .catch(error => {
+        isError.value = true;
+    })
 }
 
 </script>
 
 
 <style scoped>
+.page { @apply  gap-6 justify-center items-center p-8}
 
-.form { @apply flex flex-col gap-6 justify-center items-center p-8 }
+header{@apply w-full flex-col p-4 gap-2}
+header > h1 {@apply text-4xl font-bold}
+
 .field { @apply flex flex-col w-full gap-2 }
-input { @apply border-2 border-black rounded-lg p-2 }
-button { @apply p-2 rounded-lg w-full bg-black text-white }
+input { @apply bg-[#424242] rounded-lg p-2 focus:outline-none }
+button { @apply p-2 rounded-lg w-full }
+.login { @apply text-black font-bold bg-orange hover:bg-lightOrange focus:bg-lightOrange duration-200 }
 .google { @apply flex justify-center items-center gap-4 }
 hr { @apply bg-[#424242] h-[0.12rem] w-full }
 

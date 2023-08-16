@@ -2,7 +2,7 @@
   <div class="page">
     <Header :title="'MY PROFILE'"/>
     <header>
-      <h1>Hi, {{ auth.currentUser.email }}</h1>
+      <h1>Hi, {{ name }}</h1>
       <h3>You will achive your goals</h3>
     </header>
 
@@ -19,6 +19,9 @@ import Header from '../components/Header.vue';
 import TableData from "../components/TableData.vue";
 import { auth } from '@/firebase'
 import { signOut } from 'firebase/auth'
+
+const split = auth.currentUser.email.split('@');
+const name = split[0];
 
 const currentData = [
   {

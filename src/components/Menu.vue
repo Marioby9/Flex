@@ -19,7 +19,7 @@ const route = useRoute()
 console.log(route.path)
 
 const menu = [
-  { path: "/", name: "home", icon: "dumbbell" },
+  { path: "/workouts", name: "home", icon: "dumbbell" },
   { path: "/stats", name: "stats", icon: "chart-simple" },
   { path: "/user", name: "user", icon: "user" }
 ];
