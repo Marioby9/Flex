@@ -27,13 +27,7 @@ const menu = [
 </script>
 
 <style scoped>
-.menu {
-  @apply h-24 w-full flex items-center justify-around text-3xl;
-}
-.menu a {
-  @apply w-1/3 h-full p-1;
-}
-abbr {
-  @apply w-full h-full flex-col;
-}
+
+.menu { @apply h-16 w-full flex items-center justify-around text-2xl }
+
 </style>

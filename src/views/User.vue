@@ -2,7 +2,7 @@
   <div class="page">
     <Header :title="'MY PROFILE'"/>
     <header>
-      <h1>Hi, user</h1>
+      <h1>Hi, {{ auth.currentUser.email }}</h1>
       <h3>You will achive your goals</h3>
     </header>
 
@@ -10,13 +10,15 @@
       <TableData :data="currentData" :title="'Current Data'" />
       <TableData :data="objective" :title="'Objectives'" />
     </div>
-    
+    <button @click="signOut(auth)">logout</button>
   </div>
 </template>
 
 <script setup>
 import Header from '../components/Header.vue';
 import TableData from "../components/TableData.vue";
+import { auth } from '@/firebase'
+import { signOut } from 'firebase/auth'
 
 const currentData = [
   {

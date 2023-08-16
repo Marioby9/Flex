@@ -2,6 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import {onSnapshot, collection, getFirestore, doc, getDoc, addDoc} from "firebase/firestore";
+import { getAuth } from 'firebase/auth'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -21,6 +22,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore();
 const analytics = getAnalytics(app);
+export const auth = getAuth()
 
 //OnSnapshot es un getter y traemos rutinas
 export const getRoutines = (callback) => onSnapshot(collection(db, '/routines'), callback);
