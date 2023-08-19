@@ -1,18 +1,18 @@
 <template>
   <div class="center exeCard">
-    <h3 class="text-2xl font-bold">{{ props.name }}</h3>
+    <h3 class="text-xl self-start">{{ props.name }}</h3>
 
     <div class="props">
       <div class="prop-cont">
-        <h2>Series:</h2>
+        <p>Series</p>
         <p>{{ props.series }}</p>
       </div>
       <div class="prop-cont">
-        <h2>Reps:</h2>
+        <p>Reps</p>
         <p>{{ props.reps }}</p>
       </div>
       <div class="prop-cont">
-        <h2>Type:</h2>
+        <p>Type</p>
         <p>Power</p>
       </div>
     </div>
@@ -29,20 +29,9 @@ const props = defineProps({
 </script>
 
 <style scoped>
-.props {
-  @apply w-full flex justify-around items-center gap-4;
-}
-.props .prop-cont {
-  @apply flex items-center justify-center flex-col  ;
-}
-.props h2 {
-  @apply font-bold underline;
-}
+.exeCard { @apply flex-col gap-2 w-full border-l-4 border-[#aeaeae] rounded-r-lg bg-darkBlack p-4 }
+.props { @apply w-full flex justify-between items-center }
+.prop-cont { @apply flex items-center justify-center gap-4 }
+.prop-cont > *:nth-child(1) { @apply font-extralight }
 
-.exeCard {
-  @apply flex-col space-y-3 w-full h-32  bg-lightOrange rounded-xl text-black text-lg p-3;
-}
-.exeCard:hover {
-  @apply scale-105 duration-700;
-}
 </style>

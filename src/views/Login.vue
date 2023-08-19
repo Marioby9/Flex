@@ -41,13 +41,10 @@ import { ref } from "vue";
 import { auth, getUsername } from "@/firebase.js";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { RouterLink, useRouter } from "vue-router";
-import { useUserStore } from "../stores/user.js";
 
 //
 
 const router = useRouter();
-
-const user = useUserStore();
 
 //
 
@@ -59,10 +56,6 @@ const isError = ref(false);
 const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((credentials) => {
-      getUsername(auth.currentUser.uid, (doc) => {
-          user.username = doc.data().username; 
-          user.showUser();
-      });
       //router.push({ path: "/workouts" }); //ESTA LINEA NO SIRVE PARA NADA
     })
     .catch((error) => {

@@ -18,7 +18,6 @@
 
     <div class="exercises-container">
       <ExeCard
-        class="exeCard"
         v-for="exe in exercises"
         :name="exe.name"
         :series="exe.series"
@@ -113,16 +112,16 @@ const accept = (newName, frequency) => {
 
 <style scoped>
 .selector-container {
-  @apply w-full flex gap-4 p-4 bg-black;
+  @apply w-full flex gap-4 p-4 bg-darkBlack;
 }
 .selector {
-  @apply w-full bg-black text-white text-xl;
+  @apply w-full bg-darkBlack text-white text-xl;
 }
 option {
   @apply text-white;
 }
 .exercises-container {
-  @apply flex flex-col items-center h-full overflow-y-auto gap-4 p-4;
+  @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6;
 }
 
 .modal-bg {
