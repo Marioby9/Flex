@@ -16,7 +16,6 @@ import { RouterLink, useRoute } from "vue-router";
 //
 
 const route = useRoute()
-console.log(route.path)
 
 const menu = [
   { path: "/workouts", name: "home", icon: "dumbbell" },

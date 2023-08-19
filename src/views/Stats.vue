@@ -54,7 +54,7 @@ const squat = {
 </script>
 
 <style scoped>
-.page{@apply flex flex-col gap-4}
-.charts{@apply flex flex-col items-center h-full overflow-y-auto gap-4 p-4}
+.page{ @apply flex flex-col gap-4 }
+.charts{ @apply flex flex-col items-center h-full overflow-y-auto gap-4 p-4 }
 
 </style>

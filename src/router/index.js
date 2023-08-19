@@ -5,7 +5,10 @@ import Login from '@/views/Login.vue'
 import Workouts from '@/views/Workouts.vue'
 import Stats from '@/views/Stats.vue'
 import User from '@/views/User.vue'
+
 import { auth } from '@/firebase'
+import { useUserStore } from "../stores/user";
+
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -64,7 +67,8 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   if(to.matched.some((record) => record.meta.requiresAuth)) {
     if(auth.currentUser) {
-      next()
+        console.log(auth.currentUser.email)
+        next()
     } else {
       console.log('forbidden')
       next('/')

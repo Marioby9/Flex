@@ -14,24 +14,29 @@
 import { RouterView } from "vue-router";
 import { onMounted, ref } from "vue";
 import Menu from "@/components/Menu.vue";
-import { auth } from '@/firebase'
+import { auth, getUsername } from '@/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'vue-router'
+import { useUserStore } from "@/stores/user.js"
 
 //
 
 const router = useRouter()
+
+const user = useUserStore();
 
 //
 
 const isLoggedIn = ref(false)
 
 onMounted(() => {
-  console.log(auth.currentUser)
-  onAuthStateChanged(auth, (user) => {
-    if(user) {
-      console.log(user)
+  onAuthStateChanged(auth, (newUser) => {
+    if(newUser) {
       isLoggedIn.value = true
+      getUsername(auth.currentUser.uid, (doc) => {
+          user.username = doc.data().username; 
+          user.showUser();
+      })
       router.push({ path: '/workouts' })
     } else {
       isLoggedIn.value = false
@@ -68,6 +73,6 @@ onMounted(() => {
 }
 
 .footer {
-  @apply sticky bottom-0 left-0 bg-black;
+  @apply sticky bottom-0 left-0 bg-darkBlack;
 }
 </style>

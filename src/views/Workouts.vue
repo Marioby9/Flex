@@ -1,7 +1,6 @@
 <template>
   <div class="page">
-
-    <Header :title="'MY WORKOUTS'"/>
+    <Header :title="'MY WORKOUTS'" />
 
     <div class="selector-container">
       <select class="selector" v-model="currentRout">
@@ -19,22 +18,19 @@
 
     <div class="exercises-container">
       <ExeCard
-        class="exeCard"
         v-for="exe in exercises"
         :name="exe.name"
         :series="exe.series"
         :reps="exe.reps"
       />
 
-      <AddExeCard/>
-
+      <AddExeCard />
     </div>
   </div>
 
   <div class="modal-bg center" v-if="isModalOpen">
-      <ModalRoutine ref="modal" :onCancel="closeModal" :onAccept="accept" />
+    <ModalRoutine ref="modal" :onCancel="closeModal" :onAccept="accept" />
   </div>
-
 </template>
 
 <script setup>
@@ -43,9 +39,16 @@ import ExeCard from "../components/ExeCard.vue";
 import AddExeCard from "../components/AddExeCard.vue";
 import ModalRoutine from "../components/ModalRoutine.vue";
 
-import { getRoutines, getExercise, addRoutine } from "@/firebase.js";
+import { useUserStore } from "../stores/user";
+import { getRoutines, getExercise, addRoutine, auth } from "@/firebase.js";
 import { onMounted, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
+
+//
+
+const user = useUserStore();
+
+//
 
 const routines = ref([]);
 const currentRout = ref({});
@@ -58,7 +61,7 @@ onClickOutside(modal, () => (isModalOpen.value = false));
 
 //FUNCTIONS
 const loadRoutines = () => {
-  getRoutines((docs) => {
+  getRoutines(auth.currentUser.uid, (docs) => {
     docs.forEach((element) => {
       routines.value.push({ id: element.id, ...element.data() });
     });
@@ -75,7 +78,11 @@ const loadExercises = () => {
   });
 };
 
+
+//
+
 watch(currentRout, (newRout) => loadExercises());
+
 onMounted(() => loadRoutines());
 
 //MODAL FUNCTIONS
@@ -92,7 +99,7 @@ const accept = (newName, frequency) => {
       addRoutine({
         name: newName,
         exercises: [],
-        frequency: frequency
+        frequency: frequency,
       });
       routines.value = [];
       isModalOpen.value = false;
@@ -105,20 +112,19 @@ const accept = (newName, frequency) => {
 
 <style scoped>
 .selector-container {
-  @apply w-full flex gap-4 p-4 bg-black;
+  @apply w-full flex gap-4 p-4 bg-darkBlack;
 }
 .selector {
-  @apply w-full bg-black text-white text-xl;
+  @apply w-full bg-darkBlack text-white text-xl;
 }
 option {
   @apply text-white;
 }
 .exercises-container {
-  @apply flex flex-col items-center h-full overflow-y-auto gap-4 p-4;
+  @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6;
 }
 
 .modal-bg {
   @apply bg-overlayBlack fixed top-0 w-full h-full;
 }
-
 </style>
