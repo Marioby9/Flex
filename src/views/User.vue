@@ -2,7 +2,7 @@
   <div class="page">
     <Header :title="'MY PROFILE'"/>
     <header>
-      <h1>Hi, {{ name }}</h1>
+      <h1>Hi, {{ user.username }}</h1>
       <h3>You will achive your goals</h3>
     </header>
 
@@ -10,7 +10,10 @@
       <TableData :data="currentData" :title="'Current Data'" />
       <TableData :data="objective" :title="'Objectives'" />
     </div>
-    <button @click="signOut(auth)">logout</button>
+    <div class="logout center">
+      <button @click="logOut">logout</button>
+    </div>
+    
   </div>
 </template>
 
@@ -19,9 +22,9 @@ import Header from '../components/Header.vue';
 import TableData from "../components/TableData.vue";
 import { auth } from '@/firebase'
 import { signOut } from 'firebase/auth'
+import { useUserStore } from '../stores/user.js';
 
-const split = auth.currentUser.email.split('@');
-const name = split[0];
+const user = useUserStore();
 
 const currentData = [
   {
@@ -52,16 +55,24 @@ const objective = [
     value: "30",
   },
 ];
+
+
+const logOut = () => {
+  signOut(auth);
+  user.logout();
+}
+
+
 </script>
 
 <style scoped>
 
+.page { @apply gap-4 }
 header{@apply p-4}
-header > h1 {
-  @apply text-4xl font-extrabold;
-}
-header > h3 {
-  @apply text-lg;
-}
-.data{@apply flex flex-col gap-4 p-4}
+header > h1 { @apply text-4xl font-extrabold }
+header > h3 { @apply text-lg }
+.data { @apply flex flex-col gap-4 p-4 }
+.logout { @apply p-4 }
+.logout > button { @apply bg-darkBlack w-32 h-12 }
+
 </style>

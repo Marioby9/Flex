@@ -27,10 +27,8 @@ const router = useRouter()
 const isLoggedIn = ref(false)
 
 onMounted(() => {
-  console.log(auth.currentUser)
   onAuthStateChanged(auth, (user) => {
     if(user) {
-      console.log(user)
       isLoggedIn.value = true
       router.push({ path: '/workouts' })
     } else {
