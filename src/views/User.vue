@@ -1,6 +1,5 @@
 <template>
   <div class="page">
-    <Header :title="'MY PROFILE'"/>
     <header>
       <h1>Hi, {{ user.username }}</h1>
       <h3>You will achive your goals</h3>

@@ -1,6 +1,6 @@
 <template>
     <div class="header center">
-        <h1 class="title">{{ props.title }}</h1>
+        <h1 class="title">My {{ props.title }}</h1>
     </div>
 </template>
 
@@ -13,5 +13,5 @@ const props = defineProps({
 
 <style scoped>
 .header { @apply w-full p-4 bg-darkBlack border-b-4 border-orange }
-.title { @apply text-2xl font-thin  }
+.title { @apply text-2xl font-thin uppercase}
 </style>

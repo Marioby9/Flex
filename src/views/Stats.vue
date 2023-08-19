@@ -2,8 +2,6 @@
   
   <div class="page">
     
-    <Header :title="'MY STATS'"/>
-
     <div class="charts">
 
       <ChartCard 
@@ -31,7 +29,6 @@
 
 <script setup>
 import ChartCard from '../components/ChartCard.vue';
-import Header from '../components/Header.vue';
 
 const benchPress = {
   title: 'Bench Press',

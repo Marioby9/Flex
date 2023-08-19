@@ -61,7 +61,8 @@ const isError = ref(false);
 const signup = () => {
     createUserWithEmailAndPassword(auth, email.value, password.value)
     .then(credentials => {
-        addUser({
+        console.log(auth.currentUser.uid)
+        addUser(auth.currentUser.uid, {
             username: username.value,
         });
         user.username.value = username.value; 
@@ -78,7 +79,7 @@ const signup = () => {
 
 
 <style scoped>
-.page { @apply  gap-6 justify-center items-center p-8}
+.page { @apply  gap-6 justify-center items-center p-8 bg-coal}
 
 header{@apply w-full flex-col p-4 gap-2}
 header > h1 {@apply text-4xl font-bold}

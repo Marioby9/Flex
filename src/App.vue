@@ -1,4 +1,5 @@
 <template>
+  <Header :title="route.name" />
   <div class="view">
     <RouterView v-slot="{ Component, route }">
         <component :is="Component" />
@@ -11,9 +12,10 @@
 
 <script setup>
 
-import { RouterView } from "vue-router";
+import { RouterView, useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import Menu from "@/components/Menu.vue";
+import Header from "@/components/Header.vue";
 import { auth, getUsername } from '@/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'vue-router'
@@ -21,7 +23,9 @@ import { useUserStore } from "@/stores/user.js"
 
 //
 
-const router = useRouter()
+const route = useRoute();
+
+const router = useRouter();
 
 const user = useUserStore();
 

@@ -1,7 +1,5 @@
 <template>
   <div class="page">
-    <Header :title="'MY WORKOUTS'" />
-
     <div class="selector-container">
       <select class="selector" v-model="currentRout">
         <option v-for="routine in routines" :value="routine">
@@ -23,8 +21,11 @@
         :series="exe.series"
         :reps="exe.reps"
       />
-
-      <AddExeCard />
+      <div class="add center">
+        <p>Add a <strong>New Exercise</strong></p>
+        <font-awesome-icon icon="circle-plus"  />
+      </div>
+      
     </div>
   </div>
 
@@ -34,9 +35,7 @@
 </template>
 
 <script setup>
-import Header from "../components/Header.vue";
 import ExeCard from "../components/ExeCard.vue";
-import AddExeCard from "../components/AddExeCard.vue";
 import ModalRoutine from "../components/ModalRoutine.vue";
 
 import { useUserStore } from "../stores/user";
@@ -100,6 +99,7 @@ const accept = (newName, frequency) => {
         name: newName,
         exercises: [],
         frequency: frequency,
+        uid: auth.currentUser.uid
       });
       routines.value = [];
       isModalOpen.value = false;
@@ -111,20 +111,12 @@ const accept = (newName, frequency) => {
 </script>
 
 <style scoped>
-.selector-container {
-  @apply w-full flex gap-4 p-4 bg-darkBlack;
-}
-.selector {
-  @apply w-full bg-darkBlack text-white text-xl;
-}
-option {
-  @apply text-white;
-}
-.exercises-container {
-  @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6;
-}
+.selector-container { @apply w-full flex gap-4 p-4 bg-darkBlack }
+.selector { @apply w-full bg-darkBlack text-white text-xl }
+option { @apply text-white }
+.exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6 }
 
-.modal-bg {
-  @apply bg-overlayBlack fixed top-0 w-full h-full;
-}
+.add { @apply gap-4 text-xl text-white }
+
+.modal-bg { @apply bg-overlayBlack fixed top-0 w-full h-full }
 </style>

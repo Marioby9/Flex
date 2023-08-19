@@ -26,7 +26,7 @@ import { RouterLink} from 'vue-router'
 
 
 <style scoped>
-.page { @apply  gap-6 justify-center items-center p-8 text-lg}
+.page { @apply gap-6 justify-center items-center p-8 text-lg bg-coal }
 
 header{@apply w-full flex-col gap-2 p-4}
 header > h1 {@apply text-6xl font-bold}

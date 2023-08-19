@@ -66,7 +66,7 @@ const login = () => {
 
 <style scoped>
 .page {
-  @apply gap-6 justify-center items-center p-8;
+  @apply gap-6 justify-center items-center p-8 bg-coal;
 }
 
 header {
