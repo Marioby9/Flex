@@ -2,7 +2,7 @@
   <nav class="menu">
     <RouterLink v-for="elm in menu" :to="elm.path">
       <abbr class="center" :title="elm.name">
-        <font-awesome-icon :icon="elm.icon" :class="route.path == elm.path ? 'text-orange' : 'text-white'" alt="elm.name" />
+        <font-awesome-icon :icon="elm.icon" :class="route.path == elm.path ? 'text-white' : 'text-bone'" alt="elm.name" />
       </abbr>
     </RouterLink>
     
