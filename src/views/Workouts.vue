@@ -64,7 +64,9 @@ const loadRoutines = () => {
     docs.forEach((element) => {
       routines.value.push({ id: element.id, ...element.data() });
     });
-    currentRout.value = routines.value[0]; //Habia que ponerlo dentro del callback de getRoutines
+    if(routines.value[0]){
+      currentRout.value = routines.value[0]; //Habia que ponerlo dentro del callback de getRoutines
+    }
   });
 };
 
