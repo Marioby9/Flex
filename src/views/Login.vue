@@ -23,23 +23,24 @@
     <button class="login" @click="login()">LogIn</button>
     <hr />
     <h3 v-if="isError">Vaya, ha ocurrido un error...</h3>
-    <button class="google">
+    <button class="google" @click="signInWithPopup(auth, new GoogleAuthProvider())">
       <p>continue with Google</p>
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/706px-Google_%22G%22_Logo.svg.png"
         className="w-8"
       />
     </button>
-    <RouterLink to="/">
+    <RouterLink class="absolute bottom-12" to="/">
       <p>back</p>
     </RouterLink>
   </div>
 </template>
 
 <script setup>
+
 import { ref } from "vue";
 import { auth, getUsername } from "@/firebase.js";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { RouterLink, useRouter } from "vue-router";
 
 //
@@ -53,6 +54,8 @@ const password = ref("");
 const showPassword = ref(false);
 const isError = ref(false);
 
+//
+
 const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((credentials) => {
@@ -60,8 +63,9 @@ const login = () => {
     })
     .catch((error) => {
       isError.value = true;
-    });
-};
+    })
+}
+
 </script>
 
 <style scoped>

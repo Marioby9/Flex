@@ -1,6 +1,6 @@
 <template>
     <div class="header center">
-        <h1 class="title">My {{ props.title }}</h1>
+      <img src="@/assets/img/flex_white.png" alt="FLEX" class="w-10">
     </div>
 </template>
 

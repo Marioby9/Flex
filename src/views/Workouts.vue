@@ -7,7 +7,7 @@
         </option>
       </select>
       <img
-        class="h-9 w-9"
+        class="w-10"
         src="@/assets/img/add.png"
         alt="add"
         @click="isModalOpen = true"
@@ -21,13 +21,35 @@
         :series="exe.series"
         :reps="exe.reps"
       />
-      <div class="add center">
-        <p>Add a <strong>New Exercise</strong></p>
-        <font-awesome-icon icon="circle-plus"  />
-      </div>
+      <button class="add center" @click="exerciseModal = !exerciseModal">add exercise +</button>
       
     </div>
   </div>
+  <!--exercise modal-->
+  <Teleport to="#exercise">
+    <div class="modal-bg" v-if="exerciseModal">
+      <div class="modal" ref="modal">
+        <input type="text" placeholder="name" v-model="exerciseName">
+        <div class="center exercise-data">
+          <div>
+            <label for="series">series</label>
+            <input type="number" id="series" v-model="series" placeholder="0">
+          </div>
+          <div>
+            <label for="reps">reps</label>
+            <input type="number" id="reps" v-model="reps" placeholder="0">
+          </div>
+          <div>
+            <label for="weight">weight</label>
+            <input type="number" id="weight" v-model="weight" placeholder="0">
+          </div>
+        </div>
+        <div>
+          <button>save</button>
+        </div>
+      </div>
+    </div>
+  </Teleport>
 
   <div class="modal-bg center" v-if="isModalOpen">
     <ModalRoutine ref="modal" :onCancel="closeModal" :onAccept="accept" />
@@ -35,6 +57,7 @@
 </template>
 
 <script setup>
+
 import ExeCard from "../components/ExeCard.vue";
 import ModalRoutine from "../components/ModalRoutine.vue";
 
@@ -52,11 +75,6 @@ const user = useUserStore();
 const routines = ref([]);
 const currentRout = ref({});
 const exercises = ref([]);
-
-//MODAL LOGIC
-const isModalOpen = ref(false);
-const modal = ref(null);
-onClickOutside(modal, () => (isModalOpen.value = false));
 
 //FUNCTIONS
 const loadRoutines = () => {
@@ -86,9 +104,21 @@ watch(currentRout, (newRout) => loadExercises());
 
 onMounted(() => loadRoutines());
 
+//MODAL LOGIC
+const exerciseModal = ref(false)
+const isModalOpen = ref(false);
+const modal = ref(null);
+onClickOutside(modal, () => (closeModals()));
+
+const exerciseName = ref('')
+const series = ref(null)
+const reps = ref(null)
+const weight = ref(null)
+
 //MODAL FUNCTIONS
 
-const closeModal = () => {
+const closeModals = () => {
+  exerciseModal.value = false
   isModalOpen.value = false;
 };
 
@@ -109,16 +139,21 @@ const accept = (newName, frequency) => {
       console.log("Error al añadir: ", error);
     }
   }
-};
+}
+
 </script>
 
 <style scoped>
-.selector-container { @apply w-full flex gap-4 p-4 bg-darkBlack }
-.selector { @apply w-full bg-darkBlack text-white text-xl }
+.selector-container { @apply w-full flex gap-4 p-4 }
+.selector { @apply w-full bg-darkBlack p-2 rounded-lg text-white text-xl }
 option { @apply text-white }
 .exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6 }
+.add { @apply text-lg text-bone }
+.modal-bg{ @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-opacity-50 bg-black }
+.modal{ @apply w-full md:w-fit relative bg-black text-white m-4 p-6 md:p-12 flex flex-col gap-8 rounded-2xl }
+.exercise-data { @apply gap-2 }
+.exercise-data > * { @apply flex flex-col }
+input { @apply bg-black w-full }
 
-.add { @apply gap-4 text-xl text-white }
 
-.modal-bg { @apply bg-overlayBlack fixed top-0 w-full h-full }
 </style>
