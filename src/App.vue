@@ -1,5 +1,5 @@
 <template>
-  <Header :title="route.name" />
+  <Header :title="route.name" v-if="showIn.includes(route.name)" />
   <div class="view">
     <RouterView v-slot="{ Component, route }">
         <component :is="Component" />
@@ -31,9 +31,12 @@ const user = useUserStore();
 
 //
 
+const showIn = ["workouts", "stats", "user"];
+
 const isLoggedIn = ref(false)
 
 onMounted(() => {
+
   onAuthStateChanged(auth, (newUser) => {
     if(newUser) {
       isLoggedIn.value = true
