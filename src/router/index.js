@@ -17,6 +17,7 @@ const router = createRouter({
       path: '/', 
       name: 'home',
       component: Home,
+      hasTitle: false,
       meta: {
         requiresAuth: false,
       }
@@ -25,6 +26,7 @@ const router = createRouter({
       path: '/signup', 
       name: 'signup',
       component: Signup,
+      hasTitle: false,
       meta: {
         requiresAuth: false,
       }
@@ -33,6 +35,7 @@ const router = createRouter({
       path: '/login', 
       name: 'login',
       component: Login,
+      hasTitle: false,
       meta: {
         requiresAuth: false,
       }
@@ -41,6 +44,7 @@ const router = createRouter({
       path: '/workouts', 
       name: 'workouts',
       component: Workouts,
+      hasTitle: true,
       meta: {
         requiresAuth: true,
       }
@@ -49,6 +53,7 @@ const router = createRouter({
       path: '/stats', 
       name: 'stats',
       component: Stats,
+      hasTitle: true,
       meta: {
         requiresAuth: true,
       }
@@ -57,6 +62,7 @@ const router = createRouter({
       path: '/user', 
       name: 'user',
       component: User,
+      hasTitle: true,
       meta: {
         requiresAuth: true,
       }

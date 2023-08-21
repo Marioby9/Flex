@@ -12,8 +12,8 @@
         <p>{{ props.reps }}</p>
       </div>
       <div class="prop-cont">
-        <p>Type</p>
-        <p>Power</p>
+        <p>Weight</p>
+        <p>{{ props.weight }}</p>
       </div>
     </div>
   </div>
@@ -25,13 +25,14 @@ const props = defineProps({
   name: "Exercise",
   series: 0,
   reps: "0",
+  weight: "0"
 });
 </script>
 
 <style scoped>
 .exeCard { @apply flex-col gap-2 w-full border-l-4 border-[#aeaeae] rounded-r-lg bg-darkBlack p-4 }
 .props { @apply w-full flex justify-between items-center }
-.prop-cont { @apply flex items-center justify-center gap-4 }
+.prop-cont { @apply flex items-center justify-center gap-2 }
 .prop-cont > *:nth-child(1) { @apply font-extralight }
 
 </style>

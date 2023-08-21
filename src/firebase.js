@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {onSnapshot, collection, getFirestore, doc, query, where, addDoc, setDoc} from "firebase/firestore";
+import {onSnapshot, collection, getFirestore, doc, query, where, addDoc, setDoc, updateDoc, arrayUnion} from "firebase/firestore";
 import { getAuth } from 'firebase/auth'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -29,9 +29,14 @@ export const getUsername = (uid, callback) => onSnapshot(query(doc(db, 'users', 
 
 //OnSnapshot es un getter y traemos rutinas
 export const addRoutine = (routine) => addDoc(collection(db, "routines"), routine);
-//export const getRoutines = (callback) => onSnapshot(collection(db, 'routines'), callback);
 export const getRoutines = (uid, callback) => onSnapshot(query(collection(db, 'routines'), where("uid", "==", uid)), callback);
 
+export const addExercise = async (exercise, idRou) => {
+    const idExe = await addDoc(collection(db, "exercises"), exercise);   
+    await updateDoc(doc(db, "routines", idRou), {
+      exercises: arrayUnion(idExe.id)
+    });
+};
 
 export const getExercise = (id, callback) => onSnapshot(doc(db, 'exercises', id), callback);
 

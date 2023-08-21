@@ -42,7 +42,6 @@ onMounted(() => {
       isLoggedIn.value = true
       getUsername(auth.currentUser.uid, (doc) => {
           user.username = doc.data() ? doc.data().username : auth.currentUser.displayName
-          user.showUser();
       })
       router.push({ path: '/workouts' })
     } else {
