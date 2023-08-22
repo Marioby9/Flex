@@ -39,10 +39,9 @@ const isLoggedIn = ref(false)
 
 onAuthStateChanged(auth, (newUser) => {
   if(newUser) {
-    console.log(auth.currentUser)
     isLoggedIn.value = true
     getUsername(auth.currentUser.uid, (doc) => {
-        user.username = auth.currentUser.providerData.providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username
+        user.username = auth.currentUser.providerData[0].providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username
     })
     router.push({ path: '/workouts' })
   } else {

@@ -85,6 +85,7 @@ const signUpGoogle = () => {
     .then(credentials => {
         addUser(auth.currentUser.uid, {
             username: auth.currentUser.displayName,
+            //color
         });
         user.username.value = auth.currentUser.displayName;
     })

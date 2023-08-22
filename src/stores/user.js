@@ -7,13 +7,6 @@ export const useUserStore = defineStore('user', () => {
 
   const color = ref('#ff8800')
 
-  //
-
-  const logout = () => {
-    username.value = null;
-  }
-
-
   // AUXILIAR FUNCTION TO SHOW THE STATE OF THE USER
 
   const showUser = () =>{
@@ -23,9 +16,8 @@ export const useUserStore = defineStore('user', () => {
   }
 
   watch(color, (newColor) => {
-    console.log(newColor)
     // update
   })
 
-  return { username, color, logout, showUser }
+  return { username, color, showUser }
 })

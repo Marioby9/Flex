@@ -10,20 +10,20 @@
       <TableData :data="objective" :title="'Objectives'" />
     </section>
 
-    <section class="data">
-      <input type="color" v-model="userColor">
-    </section>
 
     <section class="config">
       <h1>Configuration</h1>
       <div class="options center">
-        <div class="correo center">
-          <p>Change Email</p>
-          <input type="email" placeholder="" name="" id="">
+        <div class="changeName center">
+          <p>Change Username</p>
+          <input type="email" :placeholder="user.username" name="" id=""> 
+        </div>
+        <div class="changeTheme center">
+          <p>Change Theme</p>
+          <input type="color" v-model="userColor">
         </div>
         <div class="buttons center">
           <button @click="deleteAcc">Delete Account</button>
-          <button>Delete Account</button>
         </div>
 
       </div>
@@ -54,7 +54,7 @@ const router = useRouter()
 
 //
 
-const userColor = ref('')
+const userColor = ref(user.color)
 
 watch(userColor, (newColor) => {
   user.color = newColor
@@ -93,7 +93,6 @@ const objective = [
 
 const logOut = () => {
   signOut(auth)
-  user.logout()
 }
 
 const deleteAcc = () => {
@@ -119,8 +118,11 @@ header > h3 { @apply text-lg }
 .logout { @apply p-4 }
 .logout > button { @apply bg-darkBlack w-32 h-12 }
 
-.config { @apply w-full text-xl gap-4 flex-col}
-.config .options { @apply w-full flex-col gap-4}
-.correo { @apply w-full flex-col }
+.config { @apply flex w-full text-xl gap-4 flex-col}
+.config .options { @apply w-full flex-col gap-6}
+.changeName { @apply w-full flex-col gap-2 }
+.changeName > input { @apply bg-coal p-2 focus:outline-none w-full rounded-md text-center}
+.changeTheme { @apply w-full flex-col gap-2 }
+.changeTheme > input { @apply w-40 h-10 rounded-lg }
 .buttons { @apply flex-col gap-2 text-bone }
 </style>
