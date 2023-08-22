@@ -1,8 +1,8 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {onSnapshot, collection, getFirestore, doc, query, where, addDoc, setDoc, updateDoc, arrayUnion} from "firebase/firestore";
-import { getAuth } from 'firebase/auth'
+import {onSnapshot, collection, getFirestore, doc, query, where, addDoc, setDoc, updateDoc, deleteDoc, arrayUnion} from "firebase/firestore";
+import { getAuth, deleteUser } from 'firebase/auth'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -26,6 +26,16 @@ export const auth = getAuth();
 
 export const addUser = (uid, user) => setDoc(doc(collection(db, 'users'), uid), user);
 export const getUsername = (uid, callback) => onSnapshot(query(doc(db, 'users', uid)), callback);
+
+export const deleteAccount = (uid) =>{
+  deleteDoc(doc(db, "users", uid));
+  onSnapshot(query(collection(db, 'routines'), where("uid", "==", uid)), (docs) => {
+    docs.forEach(elm => {
+      deleteDoc(doc(db, "routines", elm.id));
+    })
+  })
+  deleteUser(auth.currentUser);
+} 
 
 //OnSnapshot es un getter y traemos rutinas
 export const addRoutine = (routine) => addDoc(collection(db, "routines"), routine);
