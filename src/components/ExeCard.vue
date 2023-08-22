@@ -1,5 +1,5 @@
 <template>
-  <div class="center exeCard">
+  <div class="center exeCard" :style="{ borderColor: user.color }">
     <h3 class="text-xl self-start">{{ props.name }}</h3>
 
     <div class="props">
@@ -21,16 +21,25 @@
 
 <script setup>
 
+import { useUserStore } from "@/stores/user"
+
+//
+
+const user = useUserStore()
+
+//
+
 const props = defineProps({
   name: "Exercise",
   series: 0,
   reps: "0",
   weight: "0"
-});
+})
+
 </script>
 
 <style scoped>
-.exeCard { @apply flex-col gap-2 w-full border-l-4 border-[#aeaeae] rounded-r-lg bg-darkBlack p-4 }
+.exeCard { @apply flex-col gap-2 w-full border-l-4 rounded-r-lg bg-darkBlack p-4 }
 .props { @apply w-full flex justify-between items-center }
 .prop-cont { @apply flex items-center justify-center gap-2 }
 .prop-cont > *:nth-child(1) { @apply font-extralight }

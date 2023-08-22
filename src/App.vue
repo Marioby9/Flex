@@ -35,20 +35,20 @@ const showIn = ["workouts", "stats", "user"];
 
 const isLoggedIn = ref(false)
 
-onMounted(() => {
+//
 
-  onAuthStateChanged(auth, (newUser) => {
-    if(newUser) {
-      isLoggedIn.value = true
-      getUsername(auth.currentUser.uid, (doc) => {
-          user.username = doc.data() ? doc.data().username : auth.currentUser.displayName
-      })
-      router.push({ path: '/workouts' })
-    } else {
-      isLoggedIn.value = false
-      router.push({ path: '/' })
-    }
-  })
+onAuthStateChanged(auth, (newUser) => {
+  if(newUser) {
+    console.log(auth.currentUser)
+    isLoggedIn.value = true
+    getUsername(auth.currentUser.uid, (doc) => {
+        user.username = auth.currentUser.providerData.providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username
+    })
+    router.push({ path: '/workouts' })
+  } else {
+    isLoggedIn.value = false
+    router.push({ path: '/' })
+  }
 })
 
 </script>

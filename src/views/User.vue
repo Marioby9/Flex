@@ -10,6 +10,10 @@
       <TableData :data="objective" :title="'Objectives'" />
     </section>
 
+    <section class="data">
+      <input type="color" v-model="userColor">
+    </section>
+
     <section class="config">
       <h1>Configuration</h1>
       <div class="options center">
@@ -33,13 +37,28 @@
 </template>
 
 <script setup>
-import Header from '../components/Header.vue';
-import TableData from "../components/TableData.vue";
+
+import { ref, watch } from 'vue'
+import Header from '../components/Header.vue'
+import TableData from "../components/TableData.vue"
 import { auth, deleteAccount } from '@/firebase.js'
 import { signOut } from 'firebase/auth'
-import { useUserStore } from '../stores/user.js';
+import { useUserStore } from '../stores/user.js'
+import { useRouter } from 'vue-router'
 
-const user = useUserStore();
+//
+
+const user = useUserStore()
+
+const router = useRouter()
+
+//
+
+const userColor = ref('')
+
+watch(userColor, (newColor) => {
+  user.color = newColor
+})
 
 const currentData = [
   {
@@ -54,7 +73,7 @@ const currentData = [
     key: "IMC",
     value: "28.1",
   },
-];
+]
 
 const objective = [
   {
@@ -69,23 +88,22 @@ const objective = [
     key: "IMC",
     value: "30",
   },
-];
+]
 
 
 const logOut = () => {
-  signOut(auth);
-  user.logout();
+  signOut(auth)
+  user.logout()
 }
 
 const deleteAcc = () => {
   try {
-    deleteAccount(auth.currentUser.uid);
+    deleteAccount(auth.currentUser.uid)
 
   } catch (error) {
-    console.log('Error al eliminar cuenta', error);
-  }
-  finally{
-    router.push( { path: '/' } )
+    console.log('Error al eliminar cuenta', error)
+  } finally {
+    router.push({ path: '/' })
   }
 }
 

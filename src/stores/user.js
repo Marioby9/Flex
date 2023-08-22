@@ -1,9 +1,11 @@
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { defineStore } from 'pinia'
 
 export const useUserStore = defineStore('user', () => {
 
   const username = ref('');
+
+  const color = ref('#ff8800')
 
   //
 
@@ -20,5 +22,10 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
-  return { username, logout, showUser }
+  watch(color, (newColor) => {
+    console.log(newColor)
+    // update
+  })
+
+  return { username, color, logout, showUser }
 })
