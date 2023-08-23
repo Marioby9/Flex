@@ -53,6 +53,7 @@ export const deleteAccount = (uid) =>{
 //OnSnapshot es un getter y traemos rutinas
 export const addRoutine = (routine) => addDoc(collection(db, "routines"), routine);
 export const getRoutines = (uid, callback) => onSnapshot(query(collection(db, 'routines'), where("uid", "==", uid)), callback);
+export const deleteRoutine = (id) => deleteDoc(doc(db, "routines", id));
 
 export const addExercise = async (exercise, idRou) => {
     const idExe = await addDoc(collection(db, "exercises"), exercise);   

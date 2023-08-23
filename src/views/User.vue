@@ -65,7 +65,7 @@
             <input placeholder="New Password" :type="showPassword ? 'text' : 'password'" v-model="confNewPass"  >
           </div>
           
-          <button class="save" v-if="newPass && confNewPass">
+          <button class="save" v-if="newPass && confNewPass && (newPass === confNewPass)">
             save
           </button>
         </div>
@@ -95,7 +95,7 @@
 import { ref, watch } from 'vue'
 import Header from '@/components/Header.vue'
 import { auth, deleteAccount, updateColor, updateUsername, updateHeight, updateWeight } from '@/firebase.js'
-import { signOut } from 'firebase/auth'
+import { signOut, deleteUser } from 'firebase/auth'
 import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
 

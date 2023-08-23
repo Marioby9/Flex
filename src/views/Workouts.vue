@@ -6,11 +6,17 @@
           {{ routine.name }}
         </option>
       </select>
-      <img
+      <!-- <img
         class="w-10"
         src="@/assets/img/add.png"
         alt="add"
         @click="isWorkModalOpen = !isWorkModalOpen"
+      /> -->
+      <font-awesome-icon 
+        class="iconList" 
+        icon="list"
+        alt="eyePassword" 
+        @click="listModalOpen = !listModalOpen"
       />
     </div>
 
@@ -26,12 +32,47 @@
     </div>
   </div>
  
+  <!-- ListWorkouts Modal -->
+  <Teleport to="#listWorkouts">
+    <div class="modal-bg" v-if="listModalOpen">
+      <div class="modal" ref="listModal">
+
+        <header class="center" :style="{ borderColor: user.color }">
+          <h1 class="listTitle">Your Workouts</h1>
+        </header>
+
+        <div class="workoutsList">
+          <div class="workout" v-for="routine in routines">
+            <h1>{{routine.name}} </h1>
+            <div class="options">
+              <font-awesome-icon 
+                icon="fa-pen-to-square"
+                alt="eyePassword" 
+                @click="editWorkout"
+              />
+              <font-awesome-icon  
+                icon="trash"
+                alt="eyePassword" 
+                @click="deleteWorkout(routine.id)"
+              />
+            </div>
+          </div>
+        </div>
+
+        <button class="add center" @click="addWorkout">add workout +</button>
+        
+      </div>
+    </div>
+  </Teleport>
+
+
+
   <!--exercise modal-->
   <Teleport to="#addExercise">
     <div class="modal-bg" v-if="isExeModalOpen">
       <div class="modal" ref="exeModal">
 
-        <header class="center">
+        <header class="center" :style="{ borderColor: user.color }">
           <img src="@/assets/img/addExe.png" alt="addExercise">
         </header>
 
@@ -67,7 +108,7 @@
     <div class="modal-bg" v-if="isWorkModalOpen">
       <div class="modal" ref="workModal">
 
-        <header class="center">
+        <header class="center" :style="{ borderColor: user.color }">
           <img src="@/assets/img/addExe.png" alt="addExercise">
         </header>
 
@@ -105,7 +146,7 @@
 import ExeCard from "../components/ExeCard.vue";
 
 import { useUserStore } from "../stores/user";
-import { getRoutines, getExercise, addRoutine, addExercise, auth } from "@/firebase.js";
+import { getRoutines, getExercise, addRoutine, addExercise, deleteRoutine, auth } from "@/firebase.js";
 import { onMounted, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
@@ -148,12 +189,15 @@ onMounted(() => loadRoutines());
 
 
 //MODAL LOGIC
+const listModalOpen = ref(false)
 const isExeModalOpen = ref(false)
-const isWorkModalOpen = ref(false);
+const isWorkModalOpen = ref(false)
 
+const listModal = ref(null);
 const exeModal = ref(null);
 const workModal = ref(null);
 
+onClickOutside(listModal, () => (closeListModal()));
 onClickOutside(exeModal, () => (closeExeModal()));
 onClickOutside(workModal, () => (closeWorkModal()));
 
@@ -175,6 +219,20 @@ const days = ref([
 
 //MODAL FUNCTIONS
 
+const editWorkout = () => {
+
+}
+
+const deleteWorkout = (id) => {
+  deleteRoutine(id);
+  routines.value = [];
+}
+
+const addWorkout = () => {
+  listModalOpen.value = false
+  isWorkModalOpen.value = true
+}
+
 const saveWorkout = () => {
   if(workoutName == ''){
     console.log('No ha rellenado el campo');
@@ -193,6 +251,11 @@ const saveWorkout = () => {
       console.log("Error al añadir: ", error);
     }
   }
+}
+
+
+const closeListModal = () => {
+  listModalOpen.value = false;
 }
 
 const closeWorkModal = () => {
@@ -229,9 +292,9 @@ const closeExeModal = () => {
 </script>
 
 <style scoped>
-.selector-container { @apply w-full flex gap-4 p-4 }
+.selector-container { @apply w-full flex gap-4 p-4 items-center }
 .selector { @apply w-full bg-darkBlack p-2 rounded-lg text-white text-xl }
-option { @apply text-white }
+.iconList { @apply text-2xl w-10 }
 .exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6 }
 .add { @apply text-lg text-bone }
 
@@ -239,8 +302,17 @@ option { @apply text-white }
 
 .modal-bg { @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-overlayBlack }
 .modal { @apply w-full md:w-fit relative bg-black text-white text-lg  m-4 p-6 md:p-12 flex flex-col gap-8 rounded-2xl }
-.modal > header { @apply w-full border-b-4 border-orange }
+.modal > header { @apply w-full border-b-4}
+.modal .listTitle { @apply text-2xl p-4 }
 .modal img { @apply w-20 h-20 p-3 }
+
+.workoutsList { @apply flex flex-col gap-4 max-h-80 overflow-y-auto}
+.workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl}
+.workout > h1 { @apply w-full }
+.workout .options { @apply flex gap-6}
+
+
+
 .exNameData { @apply flex flex-col w-full text-center gap-2}
 .exercise-data { @apply gap-2 }
 .exercise-data > * { @apply flex flex-col text-center gap-2}
