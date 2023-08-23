@@ -16,7 +16,7 @@ import { RouterView, useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import Menu from "@/components/Menu.vue";
 import Header from "@/components/Header.vue";
-import { auth, getUsername } from '@/firebase'
+import { auth, getUser } from '@/firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'vue-router'
 import { useUserStore } from "@/stores/user.js"
@@ -40,8 +40,11 @@ const isLoggedIn = ref(false)
 onAuthStateChanged(auth, (newUser) => {
   if(newUser) {
     isLoggedIn.value = true
-    getUsername(auth.currentUser.uid, (doc) => {
+    getUser(auth.currentUser.uid, (doc) => {
         user.username = auth.currentUser.providerData[0].providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username
+        user.color = doc.data().color
+        user.height = doc.data().height
+        user.weight = doc.data().weight
     })
     router.push({ path: '/workouts' })
   } else {

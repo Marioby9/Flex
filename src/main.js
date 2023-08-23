@@ -8,8 +8,8 @@ import router from './router'
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faUser, faDumbbell, faChartSimple, faCirclePlus, faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
-library.add(faUser, faDumbbell, faChartSimple, faCirclePlus, faEye, faEyeSlash);
+import { faUser, faDumbbell, faChartSimple, faCirclePlus, faEye, faEyeSlash, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+library.add(faUser, faDumbbell, faChartSimple, faCirclePlus, faEye, faEyeSlash, faPenToSquare);
 
 const app = createApp(App)
 

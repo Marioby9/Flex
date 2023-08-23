@@ -25,7 +25,13 @@ const analytics = getAnalytics(app);
 export const auth = getAuth();
 
 export const addUser = (uid, user) => setDoc(doc(collection(db, 'users'), uid), user);
-export const getUsername = (uid, callback) => onSnapshot(query(doc(db, 'users', uid)), callback);
+export const getUser = (uid, callback) => onSnapshot(query(doc(db, 'users', uid)), callback);
+export const updateColor = (uid, newColor) => updateDoc(doc(db, "users", uid), {
+  color: newColor
+});
+export const updateUsername = (uid, newName) => updateDoc(doc(db, "users", uid), {
+  username: newName
+});
 
 export const deleteAccount = (uid) =>{
   deleteDoc(doc(db, "users", uid));

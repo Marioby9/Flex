@@ -12,8 +12,6 @@ import { useUserStore } from '@/stores/user.js'
 
 const user = useUserStore()
 
-console.log(user.color)
-
 //
 
 const props = defineProps({

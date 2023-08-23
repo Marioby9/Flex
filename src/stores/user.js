@@ -4,6 +4,8 @@ import { defineStore } from 'pinia'
 export const useUserStore = defineStore('user', () => {
 
   const username = ref('');
+  const height = ref('');
+  const weight = ref('');
 
   const color = ref('#ff8800')
 
@@ -19,5 +21,5 @@ export const useUserStore = defineStore('user', () => {
     // update
   })
 
-  return { username, color, showUser }
+  return { username, height, weight, color, showUser }
 })

@@ -6,32 +6,86 @@
     </header>
 
     <section class="data">
-      <TableData :data="currentData" :title="'Current Data'" />
-      <TableData :data="objective" :title="'Objectives'" />
+      <div class="table">
+        <div class="title">
+          <h1>Current Data</h1>
+          <font-awesome-icon
+            :class="editData ? 'text-orange' : 'text-white'" 
+            icon="fa-pen-to-square"
+            @click="editData = !editData"
+            alt="eyePassword" />
+        </div>
+        <div class="card">
+          <div class="row">
+            <p>Height</p>
+            <p v-if="!editData"> {{ user.height }} </p>
+            <input type="text" :placeholder="height" v-if="editData">
+          </div>
+          <div class="row">
+            <p>Weight</p>
+            <p v-if="!editData"> {{ user.weight }} </p>
+            <input type="text" :placeholder="weight" v-if="editData">
+          </div>
+          <div class="row">
+            <p>IMC</p>
+            <p> {{ imc }} </p>
+          </div>
+        </div>
+      </div>
+
+      <button class="save" v-if="editData">
+          save
+      </button>
     </section>
 
 
     <section class="config">
       <h1>Configuration</h1>
       <div class="options center">
-        <div class="changeName center">
+
+        <div class="change center" v-if="auth.currentUser.providerData[0].providerId != 'google.com'">
           <p>Change Username</p>
-          <input type="email" :placeholder="user.username" name="" id=""> 
+          <input type="username" :placeholder="user.username" name="" id="" v-model="newName" >
+          <button class="save" v-if="newName" @click="saveUsername">
+            save
+          </button>
         </div>
+
+        <div class="change center" v-if="auth.currentUser.providerData[0].providerId != 'google.com'">
+          <p> Change Password </p>
+          <div class="password">
+            <input placeholder="Current Password" :type="showPassword ? 'text' : 'password'" v-model="newPass" >
+            <font-awesome-icon 
+            class="eye" 
+            :icon="showPassword ? 'eye-slash' : 'eye'"
+            @click="showPassword = !showPassword"
+            alt="eyePassword" />
+          </div>
+          <div class="password">
+            <input placeholder="New Password" :type="showPassword ? 'text' : 'password'" v-model="confNewPass"  >
+          </div>
+          
+          <button class="save" v-if="newPass && confNewPass">
+            save
+          </button>
+        </div>
+
         <div class="changeTheme center">
           <p>Change Theme</p>
-          <input type="color" v-model="userColor">
+          <div>
+            <input type="color" class="colorSelector" v-model="userColor">
+            <p>{{userColor}}</p>
+          </div>
+          
         </div>
+
         <div class="buttons center">
-          <button @click="deleteAcc">Delete Account</button>
+          <button @click="logOut">logout</button>
+          <button class="deleteAcc" @click="deleteAcc">Delete Account</button>
         </div>
 
       </div>
     </section>
-
-    <div class="logout center">
-      <button @click="logOut">logout</button>
-    </div>
     
   </div>
 </template>
@@ -39,11 +93,10 @@
 <script setup>
 
 import { ref, watch } from 'vue'
-import Header from '../components/Header.vue'
-import TableData from "../components/TableData.vue"
-import { auth, deleteAccount } from '@/firebase.js'
+import Header from '@/components/Header.vue'
+import { auth, deleteAccount, updateColor, updateUsername } from '@/firebase.js'
 import { signOut } from 'firebase/auth'
-import { useUserStore } from '../stores/user.js'
+import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
 
 //
@@ -56,40 +109,40 @@ const router = useRouter()
 
 const userColor = ref(user.color)
 
+//
+
+const editData = ref(true)
+const height = ref(user.height)
+const weight = ref(user.weight)
+const imc = ref(Math.round(weight.value/Math.pow((height.value/100) , 2)))
+
+//
+
+const saveData = () => {
+
+}
+
+
+//CONFIGURATION REFS
+const showPassword = ref(false)
+const newName = ref('')
+const newPass = ref('')
+const confNewPass = ref('')
+
 watch(userColor, (newColor) => {
   user.color = newColor
+  updateColor(auth.currentUser.uid, newColor);
 })
 
-const currentData = [
-  {
-    key: "Height",
-    value: "178",
-  },
-  {
-    key: "Weight",
-    value: "88",
-  },
-  {
-    key: "IMC",
-    value: "28.1",
-  },
-]
+const saveUsername = () => {
+  user.username = newName.value
+  updateUsername(auth.currentUser.uid, newName.value)
+  newName.value = ''
+}
 
-const objective = [
-  {
-    key: "Height",
-    value: "178",
-  },
-  {
-    key: "Weight",
-    value: "95",
-  },
-  {
-    key: "IMC",
-    value: "30",
-  },
-]
-
+const savePassword = () => {
+  
+}
 
 const logOut = () => {
   signOut(auth)
@@ -114,15 +167,38 @@ const deleteAcc = () => {
 .page { @apply gap-8 p-4}
 header > h1 { @apply text-4xl font-extrabold }
 header > h3 { @apply text-lg }
-.data { @apply flex flex-col gap-4 }
-.logout { @apply p-4 }
-.logout > button { @apply bg-darkBlack w-32 h-12 }
+.data { @apply flex flex-col gap-4 w-full text-xl }
+
+.table {
+  @apply flex flex-col gap-2;
+}
+.table .card {
+  @apply w-full bg-darkBlack text-white rounded-xl;
+}
+.table .title {
+  @apply flex items-center font-bold text-lg gap-4
+}
+.table .row {
+  @apply w-full flex justify-between p-3;
+}
+.table input { @apply bg-gray w-32 rounded-md text-center}
 
 .config { @apply flex w-full text-xl gap-4 flex-col}
-.config .options { @apply w-full flex-col gap-6}
-.changeName { @apply w-full flex-col gap-2 }
-.changeName > input { @apply bg-coal p-2 focus:outline-none w-full rounded-md text-center}
-.changeTheme { @apply w-full flex-col gap-2 }
-.changeTheme > input { @apply w-40 h-10 rounded-lg }
-.buttons { @apply flex-col gap-2 text-bone }
+.config > h1 { @apply text-xl }
+.config .options { @apply w-full flex-col gap-8}
+.change { @apply w-full flex-col gap-2 }
+.change > input { @apply bg-coal p-3 focus:outline-none w-full rounded-md }
+
+.save { @apply text-bone bg-black rounded-lg p-2 w-20 self-center}
+
+.changeTheme { @apply  flex-col gap-2 }
+.changeTheme > div { @apply w-full flex gap-4 rounded-md bg-coal p-3 }
+.colorSelector { @apply w-full rounded-md}
+.changeTheme > div > p { @apply w-48 text-center }
+
+
+.password { @apply text-xl flex items-center w-full gap-2 bg-coal rounded-md pr-3}
+.password > input { @apply bg-coal p-3 focus:outline-none w-full rounded-md }
+.buttons { @apply flex-col gap-3 text-bone }
+.deleteAcc { @apply p-2 bg-red bg-opacity-50 rounded-lg }
 </style>

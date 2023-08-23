@@ -9,6 +9,7 @@ module.exports = {
     colors: {
       'darkBlack': '#0a0a0a',
       'black': '#222',
+      'overlayBlack': 'rgba(0, 0, 0, 0.8)',
       'coal':  '#2b2b2b',
       'gray': '#393E46',
       'white': '#fff',
@@ -16,7 +17,7 @@ module.exports = {
       'orange': '#ff8800',
       'lightOrange': '#ffa640',
       'salmon': '#f4ca9b',
-      'overlayBlack': 'rgba(0, 0, 0, 0.8)'
+      'red': '#dc2d22'
     }
   },
   plugins: [],

@@ -65,6 +65,9 @@ const signup = () => {
         .then(credentials => {
             addUser(auth.currentUser.uid, {
                 username: username.value,
+                color: user.color,
+                height: 0,
+                weight: 0
             });
             user.username.value = username.value; 
             router.push({ path: '/workouts' })
@@ -85,7 +88,9 @@ const signUpGoogle = () => {
     .then(credentials => {
         addUser(auth.currentUser.uid, {
             username: auth.currentUser.displayName,
-            //color
+            color: user.color,
+            height: 0,
+            weight: 0
         });
         user.username.value = auth.currentUser.displayName;
     })

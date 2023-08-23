@@ -10,6 +10,9 @@
 <script setup>
 import { ref, onMounted } from "vue";
 import { Chart } from "chart.js/auto";
+import { useUserStore } from "@/stores/user.js"
+
+const user = useUserStore()
 
 const props = defineProps({
   title: "title",
@@ -38,8 +41,9 @@ onMounted(() => {
           {
             data: props.values,
             borderWidth: 1,
-            borderColor: "black",
-            pointBackgroundColor: "orange",
+            borderColor: user.color,
+            backgroundColor: user.color,
+            pointBackgroundColor: user.color,
           },
         ],
       },
@@ -50,7 +54,7 @@ onMounted(() => {
               font: {
                 size: 18,
               },
-              color: "black",
+              color: "white",
             },
           },
           y: {
@@ -59,7 +63,7 @@ onMounted(() => {
               font: {
                 size: 18,
               },
-              color: "black",
+              color: "white",
             },
           },
         },
@@ -82,6 +86,6 @@ onMounted(() => {
   @apply text-2xl;
 }
 .bar-chart {
-  @apply w-80 p-4 bg-salmon text-black rounded-3xl;
+  @apply w-80 p-4 bg-darkBlack text-white rounded-3xl;
 }
 </style>
