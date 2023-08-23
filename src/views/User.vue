@@ -19,12 +19,12 @@
           <div class="row">
             <p>Height</p>
             <p v-if="!editData"> {{ user.height }} </p>
-            <input type="text" :placeholder="height" v-if="editData">
+            <input type="text" :placeholder="height" v-if="editData" v-model="newHeight">
           </div>
           <div class="row">
             <p>Weight</p>
             <p v-if="!editData"> {{ user.weight }} </p>
-            <input type="text" :placeholder="weight" v-if="editData">
+            <input type="text" :placeholder="weight" v-if="editData" v-model="newWeight">
           </div>
           <div class="row">
             <p>IMC</p>
@@ -33,7 +33,7 @@
         </div>
       </div>
 
-      <button class="save" v-if="editData">
+      <button class="save" v-if="editData" @click="saveData">
           save
       </button>
     </section>
@@ -94,7 +94,7 @@
 
 import { ref, watch } from 'vue'
 import Header from '@/components/Header.vue'
-import { auth, deleteAccount, updateColor, updateUsername } from '@/firebase.js'
+import { auth, deleteAccount, updateColor, updateUsername, updateHeight, updateWeight } from '@/firebase.js'
 import { signOut } from 'firebase/auth'
 import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
@@ -111,15 +111,25 @@ const userColor = ref(user.color)
 
 //
 
-const editData = ref(true)
+const editData = ref(false)
 const height = ref(user.height)
 const weight = ref(user.weight)
+const newHeight = ref()
+const newWeight = ref()
 const imc = ref(Math.round(weight.value/Math.pow((height.value/100) , 2)))
 
 //
 
 const saveData = () => {
-
+  if(!isNaN(newHeight.value)){
+    updateHeight(auth.currentUser.uid, newHeight.value)
+    editData.value = false
+  }
+  if(!isNaN(newWeight.value)){
+    updateWeight(auth.currentUser.uid, newWeight.value)
+    editData.value = false
+  }
+  
 }
 
 

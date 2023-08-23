@@ -32,6 +32,13 @@ export const updateColor = (uid, newColor) => updateDoc(doc(db, "users", uid), {
 export const updateUsername = (uid, newName) => updateDoc(doc(db, "users", uid), {
   username: newName
 });
+export const updateHeight = (uid, newHeight) => updateDoc(doc(db, "users", uid), {
+  height: newHeight
+});
+export const updateWeight = (uid, newWeight) => updateDoc(doc(db, "users", uid), {
+  weight: newWeight
+});
+
 
 export const deleteAccount = (uid) =>{
   deleteDoc(doc(db, "users", uid));
