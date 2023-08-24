@@ -37,9 +37,8 @@ const isLoggedIn = ref(false)
 
 //
 
-onAuthStateChanged(auth, (newUser) => { 
-  
-  if(newUser) { //AL BORRAR CUENTA ENTRA AQUI
+onAuthStateChanged(auth, (newUser) => {
+  if(auth.currentUser) {
     isLoggedIn.value = true
     getUser(auth.currentUser.uid, (doc) => {
         user.username = auth.currentUser.providerData[0].providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username

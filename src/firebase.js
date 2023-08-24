@@ -51,8 +51,7 @@ export const deleteAccount = (uid) =>{
   })
   deleteDoc(doc(db, "users", uid));
   deleteUser(auth.currentUser);
-  
-} 
+}
 
 //OnSnapshot es un getter y traemos rutinas
 export const addRoutine = (routine) => addDoc(collection(db, "routines"), routine);

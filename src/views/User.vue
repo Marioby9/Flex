@@ -26,7 +26,7 @@
             <p v-if="!editData"> {{ user.weight }} </p>
             <input type="text" :placeholder="weight" v-if="editData" v-model="newWeight">
           </div>
-          <div class="row">
+          <div class="row" v-if="height != 0 && weight != 0 ">
             <p>IMC</p>
             <p> {{ imc }} </p>
           </div>
@@ -54,7 +54,7 @@
         <div class="change center" v-if="auth.currentUser.providerData[0].providerId != 'google.com'">
           <p> Change Password </p>
           <div class="password">
-            <input placeholder="Current Password" :type="showPassword ? 'text' : 'password'" v-model="newPass" >
+            <input placeholder="Current Password" :type="showPassword ? 'text' : 'password'" v-model="currentPass" >
             <font-awesome-icon 
             class="eye" 
             :icon="showPassword ? 'eye-slash' : 'eye'"
@@ -62,16 +62,16 @@
             alt="eyePassword" />
           </div>
           <div class="password">
-            <input placeholder="New Password" :type="showPassword ? 'text' : 'password'" v-model="confNewPass"  >
+            <input placeholder="New Password" :type="showPassword ? 'text' : 'password'" v-model="newPass"  >
           </div>
           
-          <button class="save" v-if="newPass && confNewPass && (newPass === confNewPass)">
+          <button class="save" v-if="currentPass && newPass">
             save
           </button>
         </div>
 
         <div class="changeTheme center">
-          <p>Change Theme</p>
+          <p>Theme</p>
           <div>
             <input type="color" class="colorSelector" v-model="userColor">
             <p>{{userColor}}</p>
@@ -123,12 +123,18 @@ const imc = ref(Math.round(weight.value/Math.pow((height.value/100) , 2)))
 const saveData = () => {
   if(!isNaN(newHeight.value)){
     updateHeight(auth.currentUser.uid, newHeight.value)
+    height.value = newHeight.value
     editData.value = false
+  
   }
   if(!isNaN(newWeight.value)){
     updateWeight(auth.currentUser.uid, newWeight.value)
+    weight.value = newWeight.value
     editData.value = false
   }
+  imc.value = Math.round(weight.value/Math.pow((height.value/100) , 2))
+  
+  
   
 }
 
@@ -136,8 +142,9 @@ const saveData = () => {
 //CONFIGURATION REFS
 const showPassword = ref(false)
 const newName = ref('')
+const currentPass = ref('')
 const newPass = ref('')
-const confNewPass = ref('')
+
 
 watch(userColor, (newColor) => {
   user.color = newColor
@@ -161,11 +168,11 @@ const logOut = () => {
 const deleteAcc = () => {
   try {
     deleteAccount(auth.currentUser.uid)
-
   } catch (error) {
     console.log('Error al eliminar cuenta', error)
   } finally {
     router.push({ path: '/' })
+    
   }
 }
 
@@ -191,7 +198,7 @@ header > h3 { @apply text-lg }
 .table .row {
   @apply w-full flex justify-between p-3;
 }
-.table input { @apply bg-gray w-32 rounded-md text-center}
+.table input { @apply bg-gray w-32 rounded-md text-right p-1}
 
 .config { @apply flex w-full text-xl gap-4 flex-col}
 .config > h1 { @apply text-xl }
