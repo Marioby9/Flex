@@ -11,7 +11,7 @@
 <script setup>
 
 import { RouterView, useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Menu from "@/components/Menu.vue";
 import Header from "@/components/Header.vue";
 import { auth, getUser } from '@/fb'

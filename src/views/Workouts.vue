@@ -6,12 +6,7 @@
           {{ routine.name }}
         </option>
       </select>
-      <!-- <img
-        class="w-10"
-        src="@/assets/img/add.png"
-        alt="add"
-        @click="isWorkModalOpen = !isWorkModalOpen"
-      /> -->
+
       <font-awesome-icon 
         class="iconList" 
         icon="list"
@@ -26,8 +21,9 @@
         :name="exe.name"
         :series="exe.series"
         :reps="exe.reps"
+        :weight = "exe.weight"
       />
-      <button class="add center hover:bg-bone" @click="isExeModalOpen = !isExeModalOpen">add exercise +</button>
+      <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentRout.id" >add exercise +</button>
       
     </div>
   </div>
@@ -58,14 +54,10 @@
             </div>
           </div>
         </div>
-
         <button class="add center mt-4" @click="addWorkout">add workout +</button>
-        
       </div>
     </div>
   </Teleport>
-
-
 
   <!--exercise modal-->
   <Teleport to="#addExercise">
