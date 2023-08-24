@@ -1,9 +1,7 @@
 <template>
   <Header :title="route.name" v-if="showIn.includes(route.name)" />
   <div class="view">
-    <RouterView v-slot="{ Component, route }">
-        <component :is="Component" />
-    </RouterView>
+    <RouterView />
   </div>
   <div class="footer" v-if="isLoggedIn">
     <Menu />
@@ -16,7 +14,7 @@ import { RouterView, useRoute } from "vue-router";
 import { onMounted, ref } from "vue";
 import Menu from "@/components/Menu.vue";
 import Header from "@/components/Header.vue";
-import { auth, getUser } from '@/firebase'
+import { auth, getUser } from '@/fb'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'vue-router'
 import { useUserStore } from "@/stores/user.js"
@@ -38,7 +36,7 @@ const isLoggedIn = ref(false)
 //
 
 onAuthStateChanged(auth, (newUser) => {
-  if(newUser) {
+  if(auth.currentUser) {
     isLoggedIn.value = true
     getUser(auth.currentUser.uid, (doc) => {
         user.username = auth.currentUser.providerData[0].providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username

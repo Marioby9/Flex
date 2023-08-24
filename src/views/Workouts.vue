@@ -27,7 +27,7 @@
         :series="exe.series"
         :reps="exe.reps"
       />
-      <button class="add center" @click="isExeModalOpen = !isExeModalOpen">add exercise +</button>
+      <button class="add center hover:bg-bone" @click="isExeModalOpen = !isExeModalOpen">add exercise +</button>
       
     </div>
   </div>
@@ -53,13 +53,13 @@
               <font-awesome-icon  
                 icon="trash"
                 alt="eyePassword" 
-                @click="deleteWorkout(routine.id)"
+                @click="deleteWorkout(routine.id, routine.exercises)"
               />
             </div>
           </div>
         </div>
 
-        <button class="add center" @click="addWorkout">add workout +</button>
+        <button class="add center mt-4" @click="addWorkout">add workout +</button>
         
       </div>
     </div>
@@ -146,7 +146,7 @@
 import ExeCard from "../components/ExeCard.vue";
 
 import { useUserStore } from "../stores/user";
-import { getRoutines, getExercise, addRoutine, addExercise, deleteRoutine, auth } from "@/firebase.js";
+import { getRoutines, getExercise, addRoutine, addExercise, deleteRoutine, auth } from "@/fb";
 import { onMounted, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
@@ -223,9 +223,10 @@ const editWorkout = () => {
 
 }
 
-const deleteWorkout = (id) => {
-  deleteRoutine(id);
-  routines.value = [];
+const deleteWorkout = (id, arr) => {
+  deleteRoutine(id, arr);
+  loadRoutines()
+  loadExercises()
 }
 
 const addWorkout = () => {
@@ -296,17 +297,16 @@ const closeExeModal = () => {
 .selector { @apply w-full bg-darkBlack p-2 rounded-lg text-white text-xl }
 .iconList { @apply text-2xl w-10 }
 .exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6 }
-.add { @apply text-lg text-bone }
 
 
 
 .modal-bg { @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-overlayBlack }
-.modal { @apply w-full md:w-fit relative bg-black text-white text-lg  m-4 p-6 md:p-12 flex flex-col gap-8 rounded-2xl }
+.modal { @apply w-full md:w-fit relative bg-black text-white text-lg m-4 p-6 md:p-12 flex flex-col rounded-2xl }
 .modal > header { @apply w-full border-b-4}
 .modal .listTitle { @apply text-2xl p-4 }
 .modal img { @apply w-20 h-20 p-3 }
 
-.workoutsList { @apply flex flex-col gap-4 max-h-80 overflow-y-auto}
+.workoutsList { @apply flex flex-col gap-4 py-4 max-h-80 overflow-y-auto}
 .workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl}
 .workout > h1 { @apply w-full }
 .workout .options { @apply flex gap-6}

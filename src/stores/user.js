@@ -9,6 +9,8 @@ export const useUserStore = defineStore('user', () => {
 
   const color = ref('#ff8800')
 
+  const isLoggedIn = ref(false)
+
   // AUXILIAR FUNCTION TO SHOW THE STATE OF THE USER
 
   const showUser = () =>{

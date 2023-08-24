@@ -70,8 +70,8 @@
           </button>
         </div>
 
-        <div class="changeTheme center">
-          <p>Change Theme</p>
+        <div class="changeTheme">
+          <p>Theme</p>
           <div>
             <input type="color" class="colorSelector" v-model="userColor">
             <p>{{userColor}}</p>
@@ -80,8 +80,8 @@
         </div>
 
         <div class="buttons center">
-          <button @click="logOut">logout</button>
-          <button class="deleteAcc" @click="deleteAcc">Delete Account</button>
+          <button class="logout" @click="logOut">logout</button>
+          <button class="delete" @click="deleteAcc">Delete Account</button>
         </div>
 
       </div>
@@ -94,7 +94,7 @@
 
 import { ref, watch } from 'vue'
 import Header from '@/components/Header.vue'
-import { auth, deleteAccount, updateColor, updateUsername, updateHeight, updateWeight } from '@/firebase.js'
+import { auth, deleteAccount, updateColor, updateUsername, updateHeight, updateWeight } from '@/fb'
 import { signOut, deleteUser } from 'firebase/auth'
 import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
@@ -156,12 +156,13 @@ const savePassword = () => {
 
 const logOut = () => {
   signOut(auth)
+  location.reload()
 }
 
 const deleteAcc = () => {
   try {
     deleteAccount(auth.currentUser.uid)
-
+    location.reload()
   } catch (error) {
     console.log('Error al eliminar cuenta', error)
   } finally {
@@ -195,20 +196,25 @@ header > h3 { @apply text-lg }
 
 .config { @apply flex w-full text-xl gap-4 flex-col}
 .config > h1 { @apply text-xl }
-.config .options { @apply w-full flex-col gap-8}
+.config .options { @apply w-full flex-col gap-8 p-2 }
 .change { @apply w-full flex-col gap-2 }
 .change > input { @apply bg-coal p-3 focus:outline-none w-full rounded-md }
 
 .save { @apply text-bone bg-black rounded-lg p-2 w-20 self-center}
 
-.changeTheme { @apply  flex-col gap-2 }
+.changeTheme { @apply w-full flex flex-col gap-2 }
 .changeTheme > div { @apply w-full flex gap-4 rounded-md bg-coal p-3 }
-.colorSelector { @apply w-full rounded-md}
+.colorSelector { @apply w-full rounded-md }
 .changeTheme > div > p { @apply w-48 text-center }
 
 
 .password { @apply text-xl flex items-center w-full gap-2 bg-coal rounded-md pr-3}
 .password > input { @apply bg-coal p-3 focus:outline-none w-full rounded-md }
-.buttons { @apply flex-col gap-3 text-bone }
-.deleteAcc { @apply p-2 bg-red bg-opacity-50 rounded-lg }
+.buttons { @apply w-full flex-col gap-3 text-bone }
+.buttons button { @apply w-full p-2 rounded-lg }
+.delete { @apply bg-white text-black }
+.logout { @apply bg-black text-white }
+
+section h1 { @apply text-lg font-bold }
+
 </style>

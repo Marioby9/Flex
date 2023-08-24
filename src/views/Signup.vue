@@ -25,7 +25,7 @@
         <button class="login" @click="signup()">SignUp</button>
         <hr>
         <h3 v-if="isError">Vaya, ha ocurrido un error...</h3>
-        <button class="google" @click="signUpGoogle">
+        <button class="google" @click="google()">
             <p>continue with Google</p>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/706px-Google_%22G%22_Logo.svg.png" className='w-8'/>
         </button>
@@ -39,7 +39,7 @@
 <script setup>
 
 import { ref } from 'vue';
-import { auth, addUser } from '@/firebase.js';
+import { auth, addUser, getUser } from '@/fb';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { RouterLink , useRouter } from 'vue-router';
 import { useUserStore } from '../stores/user.js';
@@ -83,16 +83,21 @@ const signup = () => {
     }
 }
 
-const signUpGoogle = () => {
+const google = () => {
     signInWithPopup(auth, new GoogleAuthProvider())
     .then(credentials => {
-        addUser(auth.currentUser.uid, {
-            username: auth.currentUser.displayName,
-            color: user.color,
-            height: 0,
-            weight: 0
-        });
-        user.username.value = auth.currentUser.displayName;
+        getUser(auth.currentUser.uid, doc => {
+            if(!doc.data()) {
+                console.log('does not exists')
+                addUser(auth.currentUser.uid, {
+                    username: auth.currentUser.displayName,
+                    color: user.color,
+                    height: 0,
+                    weight: 0
+                })
+            }
+        })
+        user.username = auth.currentUser.displayName;
     })
     .catch(error => {
         isError.value = true;
