@@ -13,7 +13,7 @@
 <script setup>
 
 import { RouterView, useRoute } from "vue-router";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import Menu from "@/components/Menu.vue";
 import Header from "@/components/Header.vue";
 import { auth, getUser } from '@/firebase'
@@ -37,8 +37,9 @@ const isLoggedIn = ref(false)
 
 //
 
-onAuthStateChanged(auth, (newUser) => {
-  if(newUser) {
+onAuthStateChanged(auth, (newUser) => { 
+  
+  if(newUser) { //AL BORRAR CUENTA ENTRA AQUI
     isLoggedIn.value = true
     getUser(auth.currentUser.uid, (doc) => {
         user.username = auth.currentUser.providerData[0].providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username

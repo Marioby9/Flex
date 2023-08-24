@@ -6,12 +6,7 @@
           {{ routine.name }}
         </option>
       </select>
-      <!-- <img
-        class="w-10"
-        src="@/assets/img/add.png"
-        alt="add"
-        @click="isWorkModalOpen = !isWorkModalOpen"
-      /> -->
+
       <font-awesome-icon 
         class="iconList" 
         icon="list"
@@ -26,8 +21,9 @@
         :name="exe.name"
         :series="exe.series"
         :reps="exe.reps"
+        :weight = "exe.weight"
       />
-      <button class="add center" @click="isExeModalOpen = !isExeModalOpen">add exercise +</button>
+      <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentRout.id" >add exercise +</button>
       
     </div>
   </div>
@@ -58,14 +54,10 @@
             </div>
           </div>
         </div>
-
         <button class="add center" @click="addWorkout">add workout +</button>
-        
       </div>
     </div>
   </Teleport>
-
-
 
   <!--exercise modal-->
   <Teleport to="#addExercise">
@@ -307,8 +299,8 @@ const closeExeModal = () => {
 .modal img { @apply w-20 h-20 p-3 }
 
 .workoutsList { @apply flex flex-col gap-4 max-h-80 overflow-y-auto}
-.workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl}
-.workout > h1 { @apply w-full }
+.workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl }
+.workout > h1 { @apply w-full  }
 .workout .options { @apply flex gap-6}
 
 

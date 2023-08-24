@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {onSnapshot, collection, getFirestore, doc, query, where, addDoc, setDoc, updateDoc, deleteDoc, arrayUnion} from "firebase/firestore";
+import {onSnapshot, collection, getFirestore, doc, query, where, addDoc, setDoc, getDoc, getDocs, updateDoc, deleteDoc, arrayUnion} from "firebase/firestore";
 import { getAuth, deleteUser } from 'firebase/auth'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -41,20 +41,30 @@ export const updateWeight = (uid, newWeight) => updateDoc(doc(db, "users", uid),
 
 
 export const deleteAccount = (uid) =>{
-  deleteDoc(doc(db, "users", uid));
   onSnapshot(query(collection(db, 'routines'), where("uid", "==", uid)), (docs) => {
     docs.forEach(elm => {
+      elm.data().exercises.forEach((exeId) => {
+        deleteDoc(doc(db, "exercises", exeId));
+      })
       deleteDoc(doc(db, "routines", elm.id));
     })
   })
+  deleteDoc(doc(db, "users", uid));
   deleteUser(auth.currentUser);
+  
 } 
 
 //OnSnapshot es un getter y traemos rutinas
 export const addRoutine = (routine) => addDoc(collection(db, "routines"), routine);
 export const getRoutines = (uid, callback) => onSnapshot(query(collection(db, 'routines'), where("uid", "==", uid)), callback);
-export const deleteRoutine = (id) => deleteDoc(doc(db, "routines", id));
-
+export const deleteRoutine = async (id) =>{ 
+    const routine = await getDoc(doc(db, 'routines', id))
+    routine.data().exercises.forEach((exeId) => {
+      deleteDoc(doc(db, "exercises", exeId));
+    })
+  deleteDoc(doc(db, "routines", id));
+} 
+ 
 export const addExercise = async (exercise, idRou) => {
     const idExe = await addDoc(collection(db, "exercises"), exercise);   
     await updateDoc(doc(db, "routines", idRou), {
