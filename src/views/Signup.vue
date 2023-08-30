@@ -29,8 +29,8 @@
             <p>continue with Google</p>
             <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/706px-Google_%22G%22_Logo.svg.png" className='w-8'/>
         </button>
-        <RouterLink to="/">
-            <p>back</p>
+        <RouterLink class="mt-12" to="/">
+            <p>&lt; back</p>
         </RouterLink>
     </div>
 </template>
@@ -39,7 +39,7 @@
 <script setup>
 
 import { ref } from 'vue';
-import { auth, addUser, getUser } from '@/fb';
+import { auth, addUserConfig, getUserConfig } from '@/fb';
 import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 import { RouterLink , useRouter } from 'vue-router';
 import { useUserStore } from '../stores/user.js';
@@ -63,7 +63,7 @@ const signup = () => {
     if(password.value == confPassword.value){
         createUserWithEmailAndPassword(auth, email.value, password.value)
         .then(credentials => {
-            addUser(auth.currentUser.uid, {
+            addUserConfig(auth.currentUser.uid, {
                 username: username.value,
                 color: user.color,
                 height: 0,
@@ -86,10 +86,10 @@ const signup = () => {
 const google = () => {
     signInWithPopup(auth, new GoogleAuthProvider())
     .then(credentials => {
-        getUser(auth.currentUser.uid, doc => {
+        getUserConfig(auth.currentUser.uid, doc => {
             if(!doc.data()) {
                 console.log('does not exists')
-                addUser(auth.currentUser.uid, {
+                addUserConfig(auth.currentUser.uid, {
                     username: auth.currentUser.displayName,
                     color: user.color,
                     height: 0,
@@ -108,7 +108,7 @@ const google = () => {
 
 
 <style scoped>
-.page { @apply  gap-6 justify-center items-center p-8 bg-coal}
+.page { @apply gap-5 justify-center items-center p-8 bg-coal}
 
 header{@apply w-full flex-col p-4 gap-2}
 header > h1 {@apply text-4xl font-bold}
@@ -117,7 +117,7 @@ header > h1 {@apply text-4xl font-bold}
 input { @apply bg-gray p-2 focus:outline-none w-full }
 .eye{@apply text-lg p-2}
 button { @apply p-2 rounded-lg w-full }
-.login { @apply text-black font-bold bg-orange hover:bg-lightOrange focus:bg-lightOrange duration-200 }
+.login { @apply text-black font-bold bg-white duration-200 }
 .google { @apply flex justify-center items-center gap-4 }
 hr { @apply bg-[#424242] h-[0.12rem] w-full }
 

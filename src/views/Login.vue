@@ -30,8 +30,8 @@
         className="w-8"
       />
     </button>
-    <RouterLink class="absolute bottom-12" to="/">
-      <p>back</p>
+    <RouterLink class="mt-12" to="/">
+      <p>&lt; back</p>
     </RouterLink>
   </div>
 </template>
@@ -39,7 +39,7 @@
 <script setup>
 
 import { ref } from "vue"
-import { auth, getUser, addUser } from "@/fb"
+import { auth, getUserConfig, addUserConfig } from "@/fb"
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
 import { RouterLink, useRouter } from "vue-router"
 import { useUserStore } from "../stores/user"
@@ -72,10 +72,10 @@ const login = () => {
 const google = () => {
     signInWithPopup(auth, new GoogleAuthProvider())
     .then(credentials => {
-        getUser(auth.currentUser.uid, doc => {
+        getUserConfig(auth.currentUser.uid, doc => {
             if(!doc.data()) {
                 console.log('does not exists')
-                addUser(auth.currentUser.uid, {
+                addUserConfig(auth.currentUser.uid, {
                     username: auth.currentUser.displayName,
                     color: user.color,
                     height: 0,
@@ -86,6 +86,7 @@ const google = () => {
         user.username = auth.currentUser.displayName
     })
     .catch(error => {
+        console.log(error)
         isError.value = true
     })
 }
@@ -117,7 +118,7 @@ button {
   @apply p-2 rounded-lg w-full
 }
 .login {
-  @apply text-black font-bold bg-orange hover:bg-lightOrange focus:bg-lightOrange duration-200
+  @apply text-black font-bold bg-white hover:bg-lightOrange focus:bg-lightOrange duration-200
 }
 .google {
   @apply flex justify-center items-center gap-4

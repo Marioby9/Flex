@@ -10,26 +10,26 @@
 
 <script setup>
 
-import { RouterView, useRoute } from "vue-router";
-import { ref } from "vue";
-import Menu from "@/components/Menu.vue";
-import Header from "@/components/Header.vue";
-import { auth, getUser } from '@/fb'
+import { RouterView, useRoute } from "vue-router"
+import { ref } from "vue"
+import Menu from "@/components/Menu.vue"
+import Header from "@/components/Header.vue"
+import { auth, getUserConfig } from '@/fb'
 import { onAuthStateChanged } from 'firebase/auth'
 import { useRouter } from 'vue-router'
 import { useUserStore } from "@/stores/user.js"
 
 //
 
-const route = useRoute();
+const route = useRoute()
 
-const router = useRouter();
+const router = useRouter()
 
-const user = useUserStore();
+const user = useUserStore()
 
 //
 
-const showIn = ["workouts", "stats", "user"];
+const showIn = ["workouts", "stats", "user"]
 
 const isLoggedIn = ref(false)
 
@@ -38,7 +38,7 @@ const isLoggedIn = ref(false)
 onAuthStateChanged(auth, (newUser) => {
   if(auth.currentUser) {
     isLoggedIn.value = true
-    getUser(auth.currentUser.uid, (doc) => {
+    getUserConfig(auth.currentUser.uid, (doc) => {
         user.username = auth.currentUser.providerData[0].providerId == 'google.com' ? auth.currentUser.displayName : doc.data().username
         user.color = doc.data().color
         user.height = doc.data().height
@@ -54,6 +54,7 @@ onAuthStateChanged(auth, (newUser) => {
 </script>
 
 <style scoped>
+
 @import url("https://fonts.googleapis.com/css2?family=Tektur:wght@400;700;800;900&display=swap");
 
 .title {
@@ -64,6 +65,7 @@ onAuthStateChanged(auth, (newUser) => {
 .view {
   @apply flex-1 overflow-y-auto;
 }
+
 .slide-fade-enter-active {
   transition: all 0.6s ease-out;
 }
@@ -81,4 +83,5 @@ onAuthStateChanged(auth, (newUser) => {
 .footer {
   @apply sticky bottom-0 left-0 bg-darkBlack;
 }
+
 </style>
