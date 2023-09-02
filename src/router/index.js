@@ -6,7 +6,7 @@ import Workouts from '@/views/Workouts.vue'
 import Stats from '@/views/Stats.vue'
 import User from '@/views/User.vue'
 
-import { auth } from '@/firebase'
+import { auth } from '@/fb'
 import { useUserStore } from "../stores/user";
 
 

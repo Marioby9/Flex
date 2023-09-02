@@ -1,9 +1,9 @@
 <template>
   <div class="page">
     <div class="selector-container">
-      <select class="selector" v-model="currentRout">
-        <option v-for="routine in routines" :value="routine">
-          {{ routine.name }}
+      <select class="selector" v-model="currentWorkout">
+        <option v-for="workout in workouts" :value="workout">
+          {{ workout.name }}
         </option>
       </select>
 
@@ -17,13 +17,13 @@
 
     <div class="exercises-container">
       <ExeCard
-        v-for="exe in exercises"
+        v-for="exe in exercises.filter(item => item.workout == currentWorkout.id)"
         :name="exe.name"
         :series="exe.series"
         :reps="exe.reps"
         :weight = "exe.weight"
       />
-      <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentRout.id" >add exercise +</button>
+      <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentWorkout" >add exercise +</button>
       
     </div>
   </div>
@@ -38,23 +38,23 @@
         </header>
 
         <div class="workoutsList">
-          <div class="workout" v-for="routine in routines">
-            <h1>{{routine.name}} </h1>
+          <div class="workout" v-for="workout in workouts">
+            <h1>{{workout.name}}</h1>
             <div class="options">
               <font-awesome-icon 
                 icon="fa-pen-to-square"
                 alt="eyePassword" 
-                @click="editWorkout"
+                @click="editWorkout()"
               />
               <font-awesome-icon  
                 icon="trash"
-                alt="eyePassword" 
-                @click="deleteWorkout(routine.id)"
+                alt="eyePassword"
+                @click="deleteWorkout(currentWorkout.id)"
               />
             </div>
           </div>
         </div>
-        <button class="add center" @click="addWorkout">add workout +</button>
+        <button @click="openAddWorkoutModal()" class="add center mt-4" >add workout +</button>
       </div>
     </div>
   </Teleport>
@@ -138,7 +138,7 @@
 import ExeCard from "../components/ExeCard.vue";
 
 import { useUserStore } from "../stores/user";
-import { getRoutines, getExercise, addRoutine, addExercise, deleteRoutine, auth } from "@/firebase.js";
+import { getWorkouts, getExercises, addWorkout, addExercise, deleteWorkout, auth } from "@/fb";
 import { onMounted, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
@@ -148,36 +148,29 @@ const user = useUserStore();
 
 //
 
-const routines = ref([]);
-const currentRout = ref({});
-const exercises = ref([]);
+const workouts = ref([])
+const currentWorkout = ref({})
+const exercises = ref([])
 
-//FUNCTIONS
-const loadRoutines = () => {
-  getRoutines(auth.currentUser.uid, (docs) => {
-    docs.forEach((element) => {
-      routines.value.push({ id: element.id, ...element.data() });
-    });
-    if(routines.value[0]){
-      currentRout.value = routines.value[0]; //Habia que ponerlo dentro del callback de getRoutines
-    }
-  });
-};
+const loadworkouts = () => {
+  getWorkouts(auth.currentUser.uid, docs => {
+    workouts.value = []
+    docs.forEach(doc => workouts.value.push({ id: doc.id, ...doc.data() }))
+    currentWorkout.value = workouts.value[0]
+  })
+}
 
 const loadExercises = () => {
-  exercises.value = [];
-  currentRout.value[["exercises"]].forEach((id) => {
-    getExercise(id, (doc) => {
-      exercises.value.push({ id: doc.id, ...doc.data() });
-    });
-  });
-};
+  getExercises(auth.currentUser.uid, docs => {
+    exercises.value = []
+    docs.forEach(doc => exercises.value.push({ id: doc.id, ...doc.data() }))
+  })
+}
 
-
-//
-
-watch(currentRout, (newRout) => loadExercises());
-onMounted(() => loadRoutines());
+onMounted(() => {
+  loadworkouts()
+  loadExercises()
+})
 
 
 //MODAL LOGIC
@@ -215,30 +208,24 @@ const editWorkout = () => {
 
 }
 
-const deleteWorkout = (id) => {
-  deleteRoutine(id);
-  routines.value = [];
-}
-
-const addWorkout = () => {
+const openAddWorkoutModal = () => {
   listModalOpen.value = false
   isWorkModalOpen.value = true
 }
 
-const saveWorkout = () => {
+const saveWorkout = async() => {
   if(workoutName == ''){
     console.log('No ha rellenado el campo');
   }
   else{
     try {
-      addRoutine({
+      await addWorkout({
         name: workoutName.value,
-        exercises: [],
+        uid: auth.currentUser.uid,
         frequency: days.value.filter(day => day.isSelected).map(day => day.name),
-        uid: auth.currentUser.uid
-      });
-      routines.value = [];
-      closeWorkModal();
+      })
+      currentWorkout.value = workouts.value.find(item => item.name == workoutName.value)
+      closeWorkModal()
     } catch (error) {
       console.log("Error al añadir: ", error);
     }
@@ -264,12 +251,14 @@ const saveExercise = () => {
     name: exerciseName.value,
     reps: reps.value,
     series: series.value,
-    weight: weight.value
-  };
-  addExercise(newExe, currentRout.value.id)
-  routines.value = [];
-  closeExeModal();
- 
+    weight: weight.value,
+    workout: currentWorkout.value.id,
+    uid: auth.currentUser.uid
+  }
+  exercises.value = []
+  console.log(currentWorkout.value)
+  addExercise(newExe, currentWorkout.value.id)
+  closeExeModal()
 }
 
 const closeExeModal = () => {
@@ -288,26 +277,24 @@ const closeExeModal = () => {
 .selector { @apply w-full bg-darkBlack p-2 rounded-lg text-white text-xl }
 .iconList { @apply text-2xl w-10 }
 .exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6 }
-.add { @apply text-lg text-bone }
 
 
 
 .modal-bg { @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-overlayBlack }
-.modal { @apply w-full md:w-fit relative bg-black text-white text-lg  m-4 p-6 md:p-12 flex flex-col gap-8 rounded-2xl }
+.modal { @apply w-full md:w-fit relative bg-black text-white text-lg m-4 p-6 md:p-12 flex flex-col rounded-2xl }
 .modal > header { @apply w-full border-b-4}
 .modal .listTitle { @apply text-2xl p-4 }
 .modal img { @apply w-20 h-20 p-3 }
 
-.workoutsList { @apply flex flex-col gap-4 max-h-80 overflow-y-auto}
+.workoutsList { @apply flex flex-col gap-4 py-4 max-h-80 overflow-y-auto}
 .workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl }
-.workout > h1 { @apply w-full  }
-.workout .options { @apply flex gap-6}
+.workout > h1 { @apply w-full }
+.workout .options { @apply flex gap-6 }
 
 
-
-.exNameData { @apply flex flex-col w-full text-center gap-2}
+.exNameData { @apply flex flex-col w-full text-center gap-2 }
 .exercise-data { @apply gap-2 }
-.exercise-data > * { @apply flex flex-col text-center gap-2}
+.exercise-data > * { @apply flex flex-col text-center gap-2 }
 input { @apply bg-gray p-2 focus:outline-none w-full rounded-md text-center}
 .buttons { @apply flex items-center justify-center w-full gap-16 }
 
@@ -318,9 +305,5 @@ input { @apply bg-gray p-2 focus:outline-none w-full rounded-md text-center}
 .day {
   @apply font-extrabold text-lg p-1 rounded-full w-9;
 }
-
-
-
-
 
 </style>
