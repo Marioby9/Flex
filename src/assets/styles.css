@@ -19,3 +19,5 @@ html, body, #app { @apply full }
 
 .view { @apply w-full h-full bg-gray }
 .page { @apply w-full h-full flex flex-col overflow-y-auto }
+
+.add { @apply text-lg text-bone w-full p-2 rounded-lg duration-200 }

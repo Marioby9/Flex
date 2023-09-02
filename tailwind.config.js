@@ -5,8 +5,13 @@ module.exports = {
     "./src/**/*.{vue,js,ts,jsx,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'home': "url('src/assets/img/home.jpg')"
+      }
+    },
     colors: {
+      'transparent': 'transparent',
       'darkBlack': '#0a0a0a',
       'black': '#222',
       'overlayBlack': 'rgba(0, 0, 0, 0.8)',

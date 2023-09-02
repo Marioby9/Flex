@@ -23,46 +23,71 @@
     <button class="login" @click="login()">LogIn</button>
     <hr />
     <h3 v-if="isError">Vaya, ha ocurrido un error...</h3>
-    <button class="google" @click="signInWithPopup(auth, new GoogleAuthProvider())">
+    <button class="google" @click="google()">
       <p>continue with Google</p>
       <img
         src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/706px-Google_%22G%22_Logo.svg.png"
         className="w-8"
       />
     </button>
-    <RouterLink class="absolute bottom-12" to="/">
-      <p>back</p>
+    <RouterLink class="mt-12" to="/">
+      <p>&lt; back</p>
     </RouterLink>
   </div>
 </template>
 
 <script setup>
 
-import { ref } from "vue";
-import { auth } from "@/firebase.js";
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
-import { RouterLink, useRouter } from "vue-router";
+import { ref } from "vue"
+import { auth, getUserConfig, addUserConfig } from "@/fb"
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "firebase/auth"
+import { RouterLink, useRouter } from "vue-router"
+import { useUserStore } from "../stores/user"
 
 //
 
-const router = useRouter();
+const user = useUserStore()
+
+const router = useRouter()
 
 //
 
-const email = ref("");
-const password = ref("");
-const showPassword = ref(false);
-const isError = ref(false);
+const email = ref("")
+const password = ref("")
+const showPassword = ref(false)
+const isError = ref(false)
 
 //
 
 const login = () => {
   signInWithEmailAndPassword(auth, email.value, password.value)
     .then((credentials) => {
-      //router.push({ path: "/workouts" }); //ESTA LINEA NO SIRVE PARA NADA
+      //router.push({ path: "/workouts" }) //ESTA LINEA NO SIRVE PARA NADA
     })
     .catch((error) => {
-      isError.value = true;
+      isError.value = true
+    })
+}
+
+const google = () => {
+    signInWithPopup(auth, new GoogleAuthProvider())
+    .then(credentials => {
+        getUserConfig(auth.currentUser.uid, doc => {
+            if(!doc.data()) {
+                console.log('does not exists')
+                addUserConfig(auth.currentUser.uid, {
+                    username: auth.currentUser.displayName,
+                    color: user.color,
+                    height: 0,
+                    weight: 0
+                })
+            }
+        })
+        user.username = auth.currentUser.displayName
+    })
+    .catch(error => {
+        console.log(error)
+        isError.value = true
     })
 }
 
@@ -70,35 +95,35 @@ const login = () => {
 
 <style scoped>
 .page {
-  @apply gap-6 justify-center items-center p-8 bg-coal;
+  @apply gap-6 justify-center items-center p-8 bg-coal
 }
 
 header {
-  @apply w-full flex-col p-4 gap-2;
+  @apply w-full flex-col p-4 gap-2
 }
 header > h1 {
-  @apply text-4xl font-bold;
+  @apply text-4xl font-bold
 }
 
 .field {
-  @apply flex items-center w-full gap-2 bg-gray rounded-lg p-1;
+  @apply flex items-center w-full gap-2 bg-gray rounded-lg p-1
 }
 input {
-  @apply bg-gray p-2 focus:outline-none w-full;
+  @apply bg-gray p-2 focus:outline-none w-full
 }
 .eye {
-  @apply text-lg p-2;
+  @apply text-lg p-2
 }
 button {
-  @apply p-2 rounded-lg w-full;
+  @apply p-2 rounded-lg w-full
 }
 .login {
-  @apply text-black font-bold bg-orange hover:bg-lightOrange focus:bg-lightOrange duration-200;
+  @apply text-black font-bold bg-white hover:bg-lightOrange focus:bg-lightOrange duration-200
 }
 .google {
-  @apply flex justify-center items-center gap-4;
+  @apply flex justify-center items-center gap-4
 }
 hr {
-  @apply bg-[#424242] h-[0.12rem] w-full;
+  @apply bg-[#424242] h-[0.12rem] w-full
 }
 </style>
