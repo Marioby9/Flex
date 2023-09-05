@@ -15,7 +15,7 @@
       />
     </div>
 
-    <div class="exercises-container">
+    <div class="exercises-container" v-if="workouts[0]">
       <ExeCard
         v-for="exe in exercises.filter(item => item.workout == currentWorkout.id)"
         :name="exe.name"
@@ -26,12 +26,19 @@
       <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentWorkout" >add exercise +</button>
       
     </div>
+
+    <div class="emptyWorks center" v-if="!workouts[0]">
+      <img :src="'src/assets/img/lazy' + randomImg + '.png'" alt="">
+      <p>Wow, you don't have any workout...</p> <p>Get up and hit the weights!</p>
+      <button @click="openAddWorkoutModal()" class="add center mt-4" >add workout +</button>
+    </div>
+
   </div>
  
   <!-- ListWorkouts Modal -->
   <Teleport to="#listWorkouts">
     <div class="modal-bg" v-if="listModalOpen">
-      <div class="modal" ref="listModal">
+      <div class="listModal" ref="listModal">
 
         <header class="center" :style="{ borderColor: user.color }">
           <h1 class="listTitle">Your Workouts</h1>
@@ -145,6 +152,10 @@ import { onClickOutside } from "@vueuse/core";
 //
 
 const user = useUserStore();
+
+//
+
+const randomImg = Math.floor(Math.random() * 5) + 1;
 
 //
 
@@ -281,10 +292,13 @@ const closeExeModal = () => {
 
 
 .modal-bg { @apply fixed top-0 left-0 w-full h-full flex justify-center items-center bg-overlayBlack }
-.modal { @apply w-full md:w-fit relative bg-black text-white text-lg m-4 p-6 md:p-12 flex flex-col rounded-2xl }
+.modal { @apply w-full md:w-fit relative bg-black text-white text-lg m-4 p-6 md:p-12 flex flex-col rounded-2xl gap-5}
 .modal > header { @apply w-full border-b-4}
-.modal .listTitle { @apply text-2xl p-4 }
 .modal img { @apply w-20 h-20 p-3 }
+
+.listModal{ @apply w-full md:w-fit relative bg-black text-white text-lg m-4 p-6 md:p-12 flex flex-col rounded-2xl gap-3 }
+.listModal > header { @apply w-full border-b-4}
+.listTitle { @apply text-2xl p-4 }
 
 .workoutsList { @apply flex flex-col gap-4 py-4 max-h-80 overflow-y-auto}
 .workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl }
@@ -292,18 +306,19 @@ const closeExeModal = () => {
 .workout .options { @apply flex gap-6 }
 
 
-.exNameData { @apply flex flex-col w-full text-center gap-2 }
+.exNameData { @apply flex flex-col w-full text-center gap-3 }
 .exercise-data { @apply gap-2 }
 .exercise-data > * { @apply flex flex-col text-center gap-2 }
 input { @apply bg-gray p-2 focus:outline-none w-full rounded-md text-center}
 .buttons { @apply flex items-center justify-center w-full gap-16 }
 
-.frequency { @apply flex-col text-white w-full gap-2 }
-.days {
-  @apply flex justify-between items-center text-black gap-2;
-}
-.day {
-  @apply font-extrabold text-lg p-1 rounded-full w-9;
-}
+.frequency { @apply flex-col text-white w-full gap-3 }
+.days { @apply flex justify-between items-center text-black gap-2 }
+.day { @apply font-extrabold text-lg p-1 rounded-full w-9 }
+
+
+.emptyWorks { @apply w-full flex-col text-2xl p-5 text-center}
+.emptyWorks img { @apply w-52 opacity-70 }
+.emptyWorks button { @apply text-2xl }
 
 </style>

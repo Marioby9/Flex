@@ -61,7 +61,7 @@
             <input placeholder="New Password" :type="showPassword ? 'text' : 'password'" v-model="newPass"  >
           </div>
           
-          <button class="save" v-if="currentPass && newPass">
+          <button class="save" v-if="currentPass && newPass" @click="savePassword">
             save
           </button>
         </div>
@@ -95,7 +95,7 @@
 import { ref, watch } from 'vue'
 import Header from '@/components/Header.vue'
 import { auth, deleteAccount, updateColor, updateUsername, updateHeight, updateWeight } from '@/fb'
-import { signOut, deleteUser } from 'firebase/auth'
+import { signOut, reauthenticateWithCredential, EmailAuthProvider, updatePassword } from 'firebase/auth'
 import { useUserStore } from '@/stores/user.js'
 import { useRouter } from 'vue-router'
 
@@ -159,6 +159,27 @@ const saveUsername = () => {
 
 const savePassword = () => {
   
+  const credential = EmailAuthProvider.credential(
+    auth.currentUser.email,
+    currentPass.value
+  )
+
+  reauthenticateWithCredential(auth.currentUser, credential)
+  .then(() => {
+    console.log('RELOGED')
+    updatePassword(auth.currentUser, newPass.value)
+    .then(() => {
+      console.log('UPDATED')
+    })
+    .catch((error) => {
+      console.log('New Password not valid')
+    })
+  })
+  .catch((error) => {
+    console.log('Wrong old password')
+  })
+
+
 }
 
 const logOut = () => {
@@ -169,6 +190,7 @@ const logOut = () => {
 const deleteAcc = () => {
   try {
     deleteAccount(auth.currentUser.uid)
+    location.reload()
   } catch (error) {
     console.log(error)
   }
