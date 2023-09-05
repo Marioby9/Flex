@@ -28,7 +28,7 @@
     </div>
 
     <div class="emptyWorks center" v-if="!workouts[0]">
-      <img :src="'src/assets/img/lazy' + randomImg + '.png'" alt="">
+      <img src="src/assets/img/lazy1.png" alt="">
       <p>Wow, you don't have any workout...</p> <p>Get up and hit the weights!</p>
       <button @click="openAddWorkoutModal()" class="add center mt-4" >add workout +</button>
     </div>
