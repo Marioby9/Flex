@@ -22,6 +22,8 @@
         :series="exe.series"
         :reps="exe.reps"
         :weight = "exe.weight"
+        :lastUpdate = "exe.lastUpdate"
+        :clickEdit="() => editExercise(exe)"
       />
       <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentWorkout" >add exercise +</button>
       
@@ -50,12 +52,12 @@
             <div class="options">
               <font-awesome-icon 
                 icon="fa-pen-to-square"
-                alt="eyePassword" 
-                @click="editWorkout()"
+                alt="edit" 
+                @click="editWorkout(workout)"
               />
               <font-awesome-icon  
                 icon="trash"
-                alt="eyePassword"
+                alt="delete"
                 @click="deleteWorkout(currentWorkout.id)"
               />
             </div>
@@ -94,6 +96,24 @@
             <input type="text" id="weight" v-model="weight" placeholder="0">
           </div>
         </div>
+        <div class="exeOptions center">
+          <div class="toogle center">
+            <span >Add to stats</span>
+            <label>
+              <input type="checkbox" value="" class="sr-only peer">
+              <div class="w-11 h-6 bg-white peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-darkBlack after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-darkBlack after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green"></div>
+            </label>
+          </div>
+          <button class="center" v-if="isExeEditing" @click="removeExercise">
+            delete
+            <font-awesome-icon  
+                icon="trash"
+                alt="delete"
+            />
+          </button>
+        </div>
+        
+        
         <div class="buttons">
           <button @click="saveExercise">save</button>
           <button @click="closeExeModal">cancel</button>
@@ -145,7 +165,7 @@
 import ExeCard from "../components/ExeCard.vue";
 
 import { useUserStore } from "../stores/user";
-import { getWorkouts, getExercises, addWorkout, addExercise, deleteWorkout, auth } from "@/fb";
+import { getWorkouts, getExercises, addWorkout, addExercise, updateWorkout, updateExercise, deleteWorkout, deleteExercise, auth } from "@/fb";
 import { onMounted, ref, watch } from "vue";
 import { onClickOutside } from "@vueuse/core";
 
@@ -187,7 +207,9 @@ onMounted(() => {
 //MODAL LOGIC
 const listModalOpen = ref(false)
 const isExeModalOpen = ref(false)
+const isExeEditing = ref(false)
 const isWorkModalOpen = ref(false)
+const isWorkEditing = ref(false)
 
 const listModal = ref(null);
 const exeModal = ref(null);
@@ -197,11 +219,13 @@ onClickOutside(listModal, () => (closeListModal()));
 onClickOutside(exeModal, () => (closeExeModal()));
 onClickOutside(workModal, () => (closeWorkModal()));
 
+let exeId
 const exerciseName = ref('')
 const series = ref(null)
 const reps = ref('')
 const weight = ref('')
 
+let workoutId
 const workoutName = ref('');
 const days = ref([
   { name: "M", isSelected: false },
@@ -215,69 +239,108 @@ const days = ref([
 
 //MODAL FUNCTIONS
 
-const editWorkout = () => {
-
-}
-
 const openAddWorkoutModal = () => {
   listModalOpen.value = false
   isWorkModalOpen.value = true
 }
 
+const editWorkout = (workout) => {
+  listModalOpen.value = false
+  isWorkEditing.value = true
+  isWorkModalOpen.value = true
+
+  workoutId = workout.id
+  workoutName.value = workout.name
+  days.value = days.value.map(day => ({
+    ...day,
+    isSelected: workout.frequency.includes(day.name)
+  }));
+  
+}
+
 const saveWorkout = async() => {
-  if(workoutName == ''){
-    console.log('No ha rellenado el campo');
-  }
-  else{
+  if(workoutName.value){
+    const newWork = {
+      name: workoutName.value,
+      uid: auth.currentUser.uid,
+      frequency: days.value.filter(day => day.isSelected).map(day => day.name),
+    }
     try {
-      await addWorkout({
-        name: workoutName.value,
-        uid: auth.currentUser.uid,
-        frequency: days.value.filter(day => day.isSelected).map(day => day.name),
-      })
+      isWorkEditing.value ? await updateWorkout(workoutId, newWork) : await addWorkout(newWork)
       currentWorkout.value = workouts.value.find(item => item.name == workoutName.value)
       closeWorkModal()
+
     } catch (error) {
       console.log("Error al añadir: ", error);
     }
+    
   }
-}
+  else{
+    console.log('No ha rellenado el campo');
+  }
 
+
+}
 
 const closeListModal = () => {
   listModalOpen.value = false;
 }
 
 const closeWorkModal = () => {
-  isWorkModalOpen.value = false;
-  workoutName.value = '';
+  isWorkModalOpen.value = false
+  isWorkEditing.value = false
+  workoutId = ''
+  workoutName.value = ''
   days.value.forEach(day => {
     day.isSelected = false;
   })
-};
+}
 
+
+const editExercise = (exe) => {
+  exeId = exe.id
+  isExeEditing.value = true
+  isExeModalOpen.value = true
+
+  exerciseName.value = exe.name
+  series.value = exe.series
+  reps.value = exe.reps
+  weight.value = exe.weight
+}
 
 const saveExercise = () => {
-  const newExe = {
-    name: exerciseName.value,
-    reps: reps.value,
-    series: series.value,
-    weight: weight.value,
-    workout: currentWorkout.value.id,
-    uid: auth.currentUser.uid
+  if(exerciseName.value){
+    const newExe = {
+      name: exerciseName.value,
+      reps: reps.value,
+      series: series.value,
+      weight: weight.value,
+      lastUpdate: user.getDate(),
+      workout: currentWorkout.value.id,
+      uid: auth.currentUser.uid
+    }
+    exercises.value = []
+
+    isExeEditing.value ? updateExercise(exeId, newExe) : addExercise(newExe, currentWorkout.value.id)
+
+    closeExeModal()
   }
+}
+
+const removeExercise = () => {
+  deleteExercise(exeId)
   exercises.value = []
-  console.log(currentWorkout.value)
-  addExercise(newExe, currentWorkout.value.id)
   closeExeModal()
 }
 
 const closeExeModal = () => {
-  isExeModalOpen.value = false;
-  exerciseName.value = '';
-  series.value = null;
-  reps.value = '';
-  weight.value = '';
+  isExeModalOpen.value = false
+  isExeEditing.value = false
+  exeId = ''
+  exerciseName.value = ''
+  series.value = null
+  reps.value = ''
+  weight.value = ''
 }
 
 
@@ -304,6 +367,11 @@ const closeExeModal = () => {
 .workoutsList .workout { @apply flex items-center w-full bg-darkBlack rounded-md p-4 text-xl }
 .workout > h1 { @apply w-full }
 .workout .options { @apply flex gap-6 }
+
+.exeOptions { @apply w-full flex p-2 justify-around }
+.exeOptions > button { @apply text-lg text-bone gap-1}
+.exeOptions .toogle { @apply  gap-3 }
+.exeOptions .toogle > label { @apply relative inline-flex items-center cursor-pointer }
 
 
 .exNameData { @apply flex flex-col w-full text-center gap-3 }

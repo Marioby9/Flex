@@ -19,9 +19,18 @@ export const useUserStore = defineStore('user', () => {
     })
   }
 
+  const getDate = () => {
+    const date = new Date()
+    const day = date.getDate()
+    const month = date.getMonth() + 1
+    const year = date.getFullYear()
+
+    return day + '/' + month + '/' + year
+  }
+
   watch(color, (newColor) => {
     // update
   })
 
-  return { username, height, weight, color, showUser }
+  return { username, height, weight, color, getDate, showUser }
 })

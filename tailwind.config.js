@@ -22,7 +22,8 @@ module.exports = {
       'orange': '#ff8800',
       'lightOrange': '#ffa640',
       'salmon': '#f4ca9b',
-      'red': '#dc2d22'
+      'red': '#dc2d22',
+      'green': '#19e619'
     }
   },
   plugins: [],

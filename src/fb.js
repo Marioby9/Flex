@@ -31,6 +31,7 @@ export const updateWeight = (uid, newWeight) => updateDoc(doc(db, "config", uid)
 
 export const addWorkout = async workout => await addDoc(collection(db, "workouts"), workout)
 export const getWorkouts = (uid, callback) => onSnapshot(query(collection(db, 'workouts'), where("uid", "==", uid)), callback)
+export const updateWorkout = (id, workout) => updateDoc(doc(db, "workouts", id), workout)
 export const deleteWorkout = id => {
   deleteDoc(doc(db, "workouts", id))
   onSnapshot(query(collection(db, 'exercises'), where("uid", "==", auth.currentUser.uid), where("workout", "==", id)), (docs) => docs.forEach(exe => deleteDoc(doc(db, "exercises", exe.id))))
@@ -40,6 +41,8 @@ export const deleteWorkout = id => {
 
 export const addExercise = exercise => addDoc(collection(db, "exercises"), exercise)
 export const getExercises = (uid, callback) => onSnapshot(query(collection(db, 'exercises'), where("uid", "==", uid)), callback)
+export const updateExercise = (id, exe) => updateDoc(doc(db, "exercises", id), exe)
+export const deleteExercise = (id) => deleteDoc(doc(db, "exercises", id))
 
 //
 

@@ -5,7 +5,8 @@
       <font-awesome-icon 
         class="gear" 
         icon="gear"
-        alt="options" 
+        alt="options"
+        @click="editExercise" 
       />
     </div>
     <div class="props">
@@ -22,6 +23,14 @@
         <p>{{ props.weight }}</p>
       </div>
     </div>
+    <div class="date">
+      <div class="prop-cont">
+        <p>Last Update: </p>
+        <p>{{props.lastUpdate}}</p>
+      </div>
+    </div>
+    
+
   </div>
 </template>
 
@@ -39,8 +48,18 @@ const props = defineProps({
   name: "Exercise",
   series: 0,
   reps: "0",
-  weight: "0"
+  weight: "0",
+  lastUpdate: '0',
+  clickEdit: Function
 })
+
+const { emit } = defineEmits();
+
+const editExercise = () => {
+  if(props.clickEdit){
+    props.clickEdit()
+  }
+};
 
 </script>
 
@@ -51,5 +70,9 @@ const props = defineProps({
 .props { @apply w-full flex justify-between items-center }
 .prop-cont { @apply flex items-center justify-center gap-2 }
 .prop-cont > *:nth-child(1) { @apply font-extralight }
+.date  { @apply w-full }
+.date .prop-cont { @apply w-fit}
+
+
 
 </style>
