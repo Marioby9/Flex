@@ -1,28 +1,28 @@
 <template>
   <div class="page">
     <header>
-      <h1>Welcome, {{ user.username }}</h1>
+      <h1>Hola, {{ user.username }}</h1>
     </header>
 
     <section class="data">
       <div class="table">
         <div class="title">
-          <h1>Your data</h1>
+          <h1>Tus datos</h1>
           <font-awesome-icon
             :style="{ color: editData ? user.color : 'white' }"
             icon="fa-pen-to-square"
             @click="editData = !editData"
             alt="eyePassword" />
-            <button class="save" v-if="editData" @click="saveData">save</button>
+            <button class="save" v-if="editData" @click="saveData">guardar</button>
         </div>
         <div class="card">
           <div class="row">
-            <p>Height</p>
+            <p>Altura</p>
             <p v-if="!editData"> {{ user.height }} </p>
             <input type="text" :placeholder="height" v-if="editData" v-model="newHeight">
           </div>
           <div class="row">
-            <p>Weight</p>
+            <p>Peso</p>
             <p v-if="!editData"> {{ user.weight }} </p>
             <input type="text" :placeholder="weight" v-if="editData" v-model="newWeight">
           </div>
@@ -36,21 +36,21 @@
 
 
     <section class="config">
-      <h1>Configuration</h1>
+      <h1>Configuración</h1>
       <div class="options center">
 
         <div class="change center" v-if="auth.currentUser.providerData[0].providerId != 'google.com'">
-          <p>Change Username</p>
+          <p>Cambiar Username</p>
           <input type="username" :placeholder="user.username" name="" id="" v-model="newName" >
           <button class="save" v-if="newName" @click="saveUsername">
-            save
+            guardar
           </button>
         </div>
 
         <div class="change center" v-if="auth.currentUser.providerData[0].providerId != 'google.com'">
-          <p> Change Password </p>
+          <p> Cambiar contraseña </p>
           <div class="password">
-            <input placeholder="Current Password" :type="showPassword ? 'text' : 'password'" v-model="currentPass" >
+            <input placeholder="Contraseña Actual" :type="showPassword ? 'text' : 'password'" v-model="currentPass" >
             <font-awesome-icon 
             class="eye" 
             :icon="showPassword ? 'eye-slash' : 'eye'"
@@ -58,16 +58,16 @@
             alt="eyePassword" />
           </div>
           <div class="password">
-            <input placeholder="New Password" :type="showPassword ? 'text' : 'password'" v-model="newPass"  >
+            <input placeholder="Nueva Contraseña" :type="showPassword ? 'text' : 'password'" v-model="newPass"  >
           </div>
           
           <button class="save" v-if="currentPass && newPass" @click="savePassword">
-            save
+            guardar
           </button>
         </div>
 
         <div class="changeTheme">
-          <p>Theme</p>
+          <p>Tema</p>
           <div>
             <input type="color" class="colorSelector" v-model="userColor">
             <p>{{userColor}}</p>
@@ -76,10 +76,10 @@
         </div>
 
         <div class="change center">
-          <p class="self-start">Account</p>
+          <p class="self-start">Cuenta</p>
           <div class="buttons center">
-            <button class="logout" @click="logOut">logout</button>
-            <button class="delete" @click="deleteAcc">delete account</button>
+            <button class="logout" @click="logOut">cerrar sesión</button>
+            <button class="delete" @click="deleteAcc">borrar cuenta</button>
           </div>
         </div>
         
@@ -187,13 +187,11 @@ const logOut = () => {
   location.reload()
 }
 
-const deleteAcc = () => {
-  try {
-    deleteAccount(auth.currentUser.uid)
-    location.reload()
-  } catch (error) {
-    console.log(error)
-  }
+const deleteAcc = () => { //HAY QUE PEDIRLE DE NUEVO LA CONTRASEÑA. NECESITA UN LOGIN RECIENTE PARA EL DELETE USER
+  deleteAccount(auth.currentUser.uid)
+  //location.reload()
+  console.log('DELETED')
+  
 }
 
 

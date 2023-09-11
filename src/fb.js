@@ -48,7 +48,7 @@ export const deleteExercise = (id) => deleteDoc(doc(db, "exercises", id))
 
 export const deleteAccount = uid => {
   onSnapshot(query(collection(db, 'workouts'), where("uid", "==", uid)), (docs) => docs.forEach(workout => deleteDoc(doc(db, "workouts", workout.id))))
-  onSnapshot(query(collection(db, 'exercises'), where("uid", "==", uid)), (docs) => docs.forEach(workout => deleteDoc(doc(db, "exercises", workout.id))))
+  onSnapshot(query(collection(db, 'exercises'), where("uid", "==", uid)), (docs) => docs.forEach(exercise => deleteDoc(doc(db, "exercises", exercise.id))))
   deleteDoc(doc(db, "config", uid))
   deleteUser(auth.currentUser)
 } 

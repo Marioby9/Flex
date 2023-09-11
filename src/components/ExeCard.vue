@@ -19,13 +19,13 @@
         <p>{{ props.reps }}</p>
       </div>
       <div class="prop-cont">
-        <p>Weight</p>
+        <p>Peso</p>
         <p>{{ props.weight }}</p>
       </div>
     </div>
     <div class="date">
       <div class="prop-cont">
-        <p>Last Update: </p>
+        <p>Última Modificación: </p>
         <p>{{props.lastUpdate}}</p>
       </div>
     </div>
