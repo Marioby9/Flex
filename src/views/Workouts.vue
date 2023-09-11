@@ -25,14 +25,13 @@
         :lastUpdate = "exe.lastUpdate"
         :clickEdit="() => editExercise(exe)"
       />
-      <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentWorkout" >add exercise +</button>
+      <button class="add center" @click="isExeModalOpen = !isExeModalOpen" v-if="currentWorkout" >añadir ejercicio +</button>
       
     </div>
 
     <div class="emptyWorks center" v-if="!workouts[0]">
-      <img src="@/assets/img/lazy1.png" alt="">
-      <p>Wow, you don't have any workout...</p> <p>Get up and hit the weights!</p>
-      <button @click="openAddWorkoutModal()" class="add center mt-4" >add workout +</button>
+      <p>¡Vaya! Aún no has añadido ninguna rutina...</p> <p>Levántate y ve al Gimnasio</p>
+      <button @click="openAddWorkoutModal()" class="add center mt-4" >añadir rutina +</button>
     </div>
 
   </div>
@@ -43,7 +42,7 @@
       <div class="listModal" ref="listModal">
 
         <header class="center" :style="{ borderColor: user.color }">
-          <h1 class="listTitle">Your Workouts</h1>
+          <h1 class="listTitle">Tus Rutinas</h1>
         </header>
 
         <div class="workoutsList">
@@ -63,7 +62,7 @@
             </div>
           </div>
         </div>
-        <button @click="openAddWorkoutModal()" class="add center mt-4" >add workout +</button>
+        <button @click="openAddWorkoutModal()" class="add center mt-4" >añadir rutina +</button>
       </div>
     </div>
   </Teleport>
@@ -78,7 +77,7 @@
         </header>
 
         <div class="exNameData">
-          <label for="name">Exercise name</label>
+          <label for="name">Nombre del ejercicio</label>
           <input type="text" id="name" placeholder="Ex: Bench Press" v-model="exerciseName">
         </div>
         
@@ -92,20 +91,20 @@
             <input type="text" id="reps" v-model="reps" placeholder="0-0-0">
           </div>
           <div>
-            <label for="weight">weight</label>
+            <label for="weight">peso</label>
             <input type="text" id="weight" v-model="weight" placeholder="0">
           </div>
         </div>
         <div class="exeOptions center">
           <div class="toogle center">
-            <span >Add to stats</span>
+            <span >Medir marcas</span>
             <label>
               <input type="checkbox" value="" class="sr-only peer">
               <div class="w-11 h-6 bg-white peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-darkBlack after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-darkBlack after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green"></div>
             </label>
           </div>
           <button class="center" v-if="isExeEditing" @click="removeExercise">
-            delete
+            borrar
             <font-awesome-icon  
                 icon="trash"
                 alt="delete"
@@ -115,8 +114,8 @@
         
         
         <div class="buttons">
-          <button @click="saveExercise">save</button>
-          <button @click="closeExeModal">cancel</button>
+          <button @click="saveExercise">guardar</button>
+          <button @click="closeExeModal">cancelar</button>
         </div>
       </div>
     </div>
@@ -132,12 +131,12 @@
         </header>
 
         <div class="exNameData">
-          <label for="name">Workout name</label>
+          <label for="name">Nombre de la rutina</label>
           <input type="text" id="name" placeholder="Ex: Push B" v-model="workoutName">
         </div>
         
         <div class="center frequency">
-          <h1>Frequency:</h1>
+          <h1>Frecuencia:</h1>
           <div class="days">
             <button
             class="day"
@@ -151,8 +150,8 @@
         </div>
 
         <div class="buttons">
-          <button @click="saveWorkout">save</button>
-          <button @click="closeWorkModal">cancel</button>
+          <button @click="saveWorkout">guardar</button>
+          <button @click="closeWorkModal">cancelar</button>
         </div>
       </div>
     </div>
@@ -343,6 +342,8 @@ const closeExeModal = () => {
   weight.value = ''
 }
 
+//DRAG AND DROP FUNCTIONS
+
 
 </script>
 
@@ -372,7 +373,6 @@ const closeExeModal = () => {
 .exeOptions > button { @apply text-lg text-bone gap-1}
 .exeOptions .toogle { @apply  gap-3 }
 .exeOptions .toogle > label { @apply relative inline-flex items-center cursor-pointer }
-
 
 .exNameData { @apply flex flex-col w-full text-center gap-3 }
 .exercise-data { @apply gap-2 }

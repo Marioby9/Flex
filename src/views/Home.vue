@@ -17,7 +17,8 @@
         </div>
         
     </div>
-    <div class="home"></div>
+    
+    <img class="home" src="@/assets/img/home.jpg" alt="">
     <div class="overlay"></div>
 </template>
 
@@ -33,7 +34,7 @@ import { RouterLink} from 'vue-router'
 
 .page { @apply gap-16 justify-center items-center p-8 bg-transparent }
 .page > * { @apply z-20 }
-.home { filter: grayscale(100%); @apply absolute w-full h-full top-0 left-0 bg-home bg-right bg-cover }
+.home { filter: grayscale(100%); @apply absolute w-full h-full top-0 left-0 bg-right bg-cover }
 .overlay { @apply absolute w-full h-full top-0 left-0 bg-black opacity-70 }
 
 header { @apply w-full flex-col gap-16 p-4 }
