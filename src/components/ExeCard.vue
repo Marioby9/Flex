@@ -23,10 +23,9 @@
         <p>{{ props.weight }}</p>
       </div>
     </div>
-    <div class="date">
+    <div class="date" v-if="getDaysBetween(props.lastUpdate) >= 60">
       <div class="prop-cont">
-        <p>Última Modificación: </p>
-        <p>{{props.lastUpdate}}</p>
+        <p class="text-bone mt-2">última modificación hace <b>{{ getDaysBetween(props.lastUpdate) }}</b> días</p>
       </div>
     </div>
     
@@ -36,7 +35,9 @@
 
 <script setup>
 
+import { onMounted } from "vue"
 import { useUserStore } from "@/stores/user"
+import { differenceInDays, startOfToday } from 'date-fns'
 
 //
 
@@ -61,18 +62,22 @@ const editExercise = () => {
   }
 };
 
+const getDaysBetween = (update) => {
+  const date = new Date(update.split('/')[2], update.split('/')[1] - 1, update.split('/')[0])
+  return differenceInDays(startOfToday(), date)
+}
+
+
 </script>
 
 <style scoped>
-.exeCard { @apply flex-col gap-3 w-full border-l-4 rounded-r-lg bg-darkBlack p-4 }
-.header { @apply w-full flex items-center justify-between text-xl}
 
+.exeCard { @apply flex-col gap-1 w-full border-l-4 rounded-r-lg bg-darkBlack p-3 }
+.header { @apply w-full flex items-center justify-between text-lg }
 .props { @apply w-full flex justify-between items-center }
 .prop-cont { @apply flex items-center justify-center gap-2 }
 .prop-cont > *:nth-child(1) { @apply font-extralight }
 .date  { @apply w-full }
 .date .prop-cont { @apply w-fit}
-
-
 
 </style>

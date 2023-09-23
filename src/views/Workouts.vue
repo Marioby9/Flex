@@ -351,7 +351,7 @@ const closeExeModal = () => {
 .selector-container { @apply w-full flex gap-4 p-4 items-center }
 .selector { @apply w-full bg-darkBlack p-2 rounded-lg text-white text-xl }
 .iconList { @apply text-2xl w-10 }
-.exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-6 p-6 }
+.exercises-container { @apply flex flex-col items-center h-full overflow-y-auto gap-4 p-6 }
 
 
 
@@ -385,8 +385,8 @@ input { @apply bg-gray p-2 focus:outline-none w-full rounded-md text-center}
 .day { @apply font-extrabold text-lg p-1 rounded-full w-9 }
 
 
-.emptyWorks { @apply w-full flex-col text-2xl p-5 text-center}
+.emptyWorks { @apply w-full flex-col text-lg p-5 text-center}
 .emptyWorks img { @apply w-52 opacity-70 }
-.emptyWorks button { @apply text-2xl }
+.emptyWorks button { @apply text-lg }
 
 </style>

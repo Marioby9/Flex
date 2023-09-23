@@ -199,13 +199,13 @@ const deleteAcc = () => { //HAY QUE PEDIRLE DE NUEVO LA CONTRASEÑA. NECESITA UN
 
 <style scoped>
 
-.page { @apply gap-8 p-4 text-sm }
+.page { @apply gap-6 p-4 text-sm }
 header > h1 { @apply text-4xl font-extrabold }
 header > h3 { @apply text-lg }
-.data { @apply flex flex-col gap-4 w-full text-xl }
+.data { @apply flex flex-col gap-4 w-full text-lg }
 
 .table {
-  @apply flex flex-col gap-2;
+  @apply flex flex-col;
 }
 .table .card {
   @apply w-full bg-darkBlack text-white rounded-xl;
@@ -214,11 +214,11 @@ header > h3 { @apply text-lg }
   @apply flex items-center font-bold text-lg gap-4 h-12
 }
 .table .row {
-  @apply w-full flex justify-between p-3;
+  @apply w-full flex justify-between p-2;
 }
 .table input { @apply bg-gray w-32 rounded-md text-right p-1}
 
-.config { @apply flex w-full text-lg gap-4 flex-col}
+.config { @apply flex w-full text-lg gap-2 flex-col}
 .config > h1 { @apply text-xl }
 .config .options { @apply w-full flex-col gap-8 p-2 }
 .change { @apply w-full flex-col gap-2 }
@@ -227,7 +227,7 @@ header > h3 { @apply text-lg }
 .save { @apply font-normal bg-black rounded-lg px-2 py-1 ml-auto }
 
 .changeTheme { @apply w-full flex flex-col gap-2 }
-.changeTheme > div { @apply w-full flex gap-4 rounded-md bg-coal p-3 }
+.changeTheme > div { @apply w-full flex gap-4 rounded-md bg-black p-3 }
 .colorSelector { @apply w-full rounded-md }
 .changeTheme > div > p { @apply w-48 text-center }
 
@@ -235,7 +235,7 @@ header > h3 { @apply text-lg }
 .password { @apply text-xl flex items-center w-full gap-2 bg-coal rounded-md pr-3}
 .password > input { @apply bg-coal p-3 focus:outline-none w-full rounded-md }
 .buttons { @apply w-full flex-col gap-4 text-bone }
-.buttons button { @apply w-full p-2 rounded-lg }
+.buttons button { @apply w-full p-2 rounded-lg text-base }
 .delete, .logout { @apply bg-black text-white }
 
 section h1 { @apply text-lg font-bold }
